@@ -22,8 +22,18 @@ class ResultsScene(Scene):
         self.selected_team = kwargs.get("selected_team", "BRAZIL")
         self.difficulty = kwargs.get("difficulty", "medium")
         
+        # Ensure state is RESULT
         if self.state_manager.current_state != State.RESULT:
             self.state_manager.change_state(State.RESULT)
+
+        # Update mode progression
+        mode_mgr = self.scene_manager.mode_manager
+        player_won = (self.winner == "player")
+        
+        if mode_mgr.active_mode == "tournament" and mode_mgr.tournament:
+            mode_mgr.tournament.advance_stage(player_won)
+        elif mode_mgr.active_mode == "career" and mode_mgr.career:
+            mode_mgr.career.record_match(player_won)
 
     def handle_event(self, event: pygame.event.Event) -> None:
         if event.type == pygame.KEYDOWN:
@@ -46,16 +56,74 @@ class ResultsScene(Scene):
                     self._select_option()
 
     def _select_option(self) -> None:
-        if self.selected_index in (0, 1):
-            # Retry or Continue -> Saving -> Loading/Gameplay
+        mode_mgr = self.scene_manager.mode_manager
+        
+        if self.selected_index == 0:
+            # Retry Match: go back to Gameplay
             self.state_manager.change_state(State.SAVING)
             self.state_manager.change_state(State.GAMEPLAY)
+            # Re-initialize the active mode round back to same state
+            # If in tournament or career, we need to roll back the result we just recorded!
+            # Since we just advanced stage or recorded match in on_enter:
+            if mode_mgr.active_mode == "tournament" and mode_mgr.tournament:
+                # Rollback tournament stage indices
+                t = mode_mgr.tournament
+                if t.eliminated:
+                    t.eliminated = False
+                else:
+                    if t.winner == t.player_team:
+                        t.winner = None
+                        t.current_stage_idx = 2
+                    else:
+                        t.current_stage_idx = max(0, t.current_stage_idx - 1)
+                    if t.current_stage_idx in t.results and len(t.results[t.stages[t.current_stage_idx]]) > 0:
+                        t.results[t.stages[t.current_stage_idx]].pop()
+            elif mode_mgr.active_mode == "career" and mode_mgr.career:
+                # Rollback career index
+                c = mode_mgr.career
+                c.current_match_idx = max(1, c.current_match_idx - 1)
+                if len(c.history) > 0:
+                    last_res = c.history.pop()
+                    if last_res == "win":
+                        c.wins -= 1
+                        c.points -= 3
+                    else:
+                        c.losses -= 1
+            
             self.scene_manager.switch_scene("loading", selected_team=self.selected_team, difficulty=self.difficulty)
+            
+        elif self.selected_index == 1:
+            # Continue -> Route based on active mode
+            self.state_manager.change_state(State.SAVING)
+            
+            if mode_mgr.active_mode == "practice":
+                self.state_manager.change_state(State.MAIN_MENU)
+                self.scene_manager.switch_scene("menu")
+                
+            elif mode_mgr.active_mode == "tournament" and mode_mgr.tournament:
+                t = mode_mgr.tournament
+                if t.eliminated:
+                    # Player lost/eliminated: return to Main Menu
+                    self.state_manager.change_state(State.MAIN_MENU)
+                    self.scene_manager.switch_scene("menu")
+                elif t.winner == t.player_team:
+                    # Player won the final: Championship Ceremony!
+                    self.state_manager.change_state(State.MAIN_MENU)
+                    self.scene_manager.switch_scene("championship")
+                else:
+                    # Go back to bracket screen
+                    self.state_manager.change_state(State.MAIN_MENU)
+                    self.scene_manager.switch_scene("tournament_bracket", difficulty=self.difficulty)
+                    
+            elif mode_mgr.active_mode == "career" and mode_mgr.career:
+                # Go to career hub screen
+                self.state_manager.change_state(State.MAIN_MENU)
+                self.scene_manager.switch_scene("career_hub", difficulty=self.difficulty)
+                
         elif self.selected_index == 2:
             self._go_to_menu()
 
     def _go_to_menu(self) -> None:
-        # Saving -> Main Menu
         self.state_manager.change_state(State.SAVING)
         self.state_manager.change_state(State.MAIN_MENU)
         self.scene_manager.switch_scene("menu")

@@ -23,6 +23,11 @@ from scenes.settings import SettingsScene
 from scenes.credits import CreditsScene
 from scenes.exit_confirm import ExitConfirmScene
 
+from game.mode_manager import GameModeManager
+from scenes.tournament_bracket import TournamentBracketScene
+from scenes.career_hub import CareerHubScene
+from scenes.championship import ChampionshipScene
+
 def main() -> None:
     # 1. Load configuration
     config = ConfigManager("config/settings.json")
@@ -62,6 +67,8 @@ def main() -> None:
     event_manager = EventManager()
     state_manager = StateManager(event_manager, State.LOADING)
     scene_manager = SceneManager()
+    mode_manager = GameModeManager()
+    scene_manager.mode_manager = mode_manager
     asset_manager = AssetManager()
 
     # 6. Instantiate and register all Scenes
@@ -77,7 +84,10 @@ def main() -> None:
         "results": ResultsScene("results", state_manager, scene_manager, asset_manager),
         "settings": SettingsScene("settings", state_manager, scene_manager, asset_manager),
         "credits": CreditsScene("credits", state_manager, scene_manager, asset_manager),
-        "exit_confirm": ExitConfirmScene("exit_confirm", state_manager, scene_manager, asset_manager)
+        "exit_confirm": ExitConfirmScene("exit_confirm", state_manager, scene_manager, asset_manager),
+        "tournament_bracket": TournamentBracketScene("tournament_bracket", state_manager, scene_manager, asset_manager),
+        "career_hub": CareerHubScene("career_hub", state_manager, scene_manager, asset_manager),
+        "championship": ChampionshipScene("championship", state_manager, scene_manager, asset_manager)
     }
 
     for name, scene_obj in scenes_map.items():

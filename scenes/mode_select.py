@@ -6,7 +6,7 @@ from core.state_manager import State
 class ModeSelectScene(Scene):
     def __init__(self, name: str, state_manager: Any, scene_manager: Any, asset_manager: Any) -> None:
         super().__init__(name, state_manager, scene_manager, asset_manager)
-        self.options = ["PRACTICE MODE", "TOURNAMENT MODE (V1.5)", "CAREER MODE (V2.0)", "BACK"]
+        self.options = ["PRACTICE MODE", "TOURNAMENT MODE", "CAREER MODE", "BACK"]
         self.selected_index = 0
 
     def on_enter(self, **kwargs: Any) -> None:
@@ -24,7 +24,6 @@ class ModeSelectScene(Scene):
                 self.scene_manager.switch_scene("menu")
 
         elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-            # Simple click handling for options
             m_pos = event.pos
             screen_w = 1280
             for idx in range(len(self.options)):
@@ -34,11 +33,17 @@ class ModeSelectScene(Scene):
                     self._select_option()
 
     def _select_option(self) -> None:
+        mode_mgr = self.scene_manager.mode_manager
         if self.selected_index == 0:
-            # Practice mode
+            mode_mgr.active_mode = "practice"
+            self.scene_manager.switch_scene("team_select")
+        elif self.selected_index == 1:
+            mode_mgr.active_mode = "tournament"
+            self.scene_manager.switch_scene("team_select")
+        elif self.selected_index == 2:
+            mode_mgr.active_mode = "career"
             self.scene_manager.switch_scene("team_select")
         elif self.selected_index == 3:
-            # Back
             self.scene_manager.switch_scene("menu")
 
     def render(self, screen: pygame.Surface) -> None:
@@ -53,14 +58,7 @@ class ModeSelectScene(Scene):
         # Options
         font_opt = self.asset_manager.get_font("default", 32)
         for idx, option in enumerate(self.options):
-            is_selectable = idx in (0, 3)
-            if idx == self.selected_index:
-                color = (255, 255, 255)
-            elif not is_selectable:
-                color = (80, 90, 100)
-            else:
-                color = (130, 140, 150)
-                
+            color = (255, 255, 255) if idx == self.selected_index else (130, 140, 150)
             prefix = "> " if idx == self.selected_index else "  "
             opt_surf = font_opt.render(prefix + option, True, color)
             opt_rect = opt_surf.get_rect(center=(screen.get_width() // 2, 300 + idx * 60))

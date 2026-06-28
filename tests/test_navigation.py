@@ -24,6 +24,9 @@ class TestNavigationFlow(unittest.TestCase):
         self.event_manager = EventManager()
         self.state_manager = StateManager(self.event_manager, State.LOADING)
         self.scene_manager = SceneManager()
+        from game.mode_manager import GameModeManager
+        self.mode_manager = GameModeManager()
+        self.scene_manager.mode_manager = self.mode_manager
         self.asset_manager = AssetManager()
 
         self.scenes = {

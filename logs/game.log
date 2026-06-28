@@ -146,3 +146,114 @@
 [2026-06-29 00:20:40] [INFO] [GameLoop]: Starting GameLoop with target FPS: 60
 [2026-06-29 00:20:42] [INFO] [StateManager]: State transitioned successfully: State.LOADING -> State.MAIN_MENU
 [2026-06-29 00:20:42] [INFO] [SceneManager]: Transitioning to scene: menu
+[2026-06-29 00:22:31] [INFO] [root]: Logging initialized at level INFO. Log file: logs/game.log
+[2026-06-29 00:22:31] [INFO] [root]: Application starting up...
+[2026-06-29 00:22:32] [INFO] [root]: Pygame mixer initialized successfully.
+[2026-06-29 00:22:32] [INFO] [root]: Display window created: 1280x720 (Fullscreen: False)
+[2026-06-29 00:22:32] [INFO] [StateManager]: StateManager initialized in state: State.LOADING
+[2026-06-29 00:22:32] [INFO] [AssetManager]: AssetManager initialized (basic structure only, no real assets loaded).
+[2026-06-29 00:22:32] [INFO] [SceneManager]: Scene registered: splash
+[2026-06-29 00:22:32] [INFO] [SceneManager]: Scene registered: menu
+[2026-06-29 00:22:32] [INFO] [SceneManager]: Scene registered: mode_select
+[2026-06-29 00:22:32] [INFO] [SceneManager]: Scene registered: team_select
+[2026-06-29 00:22:32] [INFO] [SceneManager]: Scene registered: difficulty_select
+[2026-06-29 00:22:32] [INFO] [SceneManager]: Scene registered: loading
+[2026-06-29 00:22:32] [INFO] [SceneManager]: Scene registered: gameplay
+[2026-06-29 00:22:32] [INFO] [SceneManager]: Scene registered: pause
+[2026-06-29 00:22:32] [INFO] [SceneManager]: Scene registered: results
+[2026-06-29 00:22:32] [INFO] [SceneManager]: Scene registered: settings
+[2026-06-29 00:22:32] [INFO] [SceneManager]: Scene registered: credits
+[2026-06-29 00:22:32] [INFO] [SceneManager]: Scene registered: exit_confirm
+[2026-06-29 00:22:32] [INFO] [SceneManager]: Transitioning to scene: splash
+[2026-06-29 00:22:32] [INFO] [GameLoop]: Starting GameLoop with target FPS: 60
+[2026-06-29 00:22:34] [INFO] [StateManager]: State transitioned successfully: State.LOADING -> State.MAIN_MENU
+[2026-06-29 00:22:34] [INFO] [SceneManager]: Transitioning to scene: menu
+[2026-06-29 00:22:35] [INFO] [SceneManager]: Transitioning to scene: mode_select
+[2026-06-29 00:22:45] [INFO] [SceneManager]: Transitioning to scene: team_select
+[2026-06-29 00:22:47] [INFO] [SceneManager]: Transitioning to scene: difficulty_select
+[2026-06-29 00:22:51] [INFO] [SceneManager]: Transitioning to scene: loading
+[2026-06-29 00:22:52] [INFO] [StateManager]: State transitioned successfully: State.MAIN_MENU -> State.GAMEPLAY
+[2026-06-29 00:22:52] [INFO] [SceneManager]: Transitioning to scene: gameplay
+[2026-06-29 00:23:53] [INFO] [StateManager]: State transitioned successfully: State.GAMEPLAY -> State.PAUSED
+[2026-06-29 00:23:53] [INFO] [SceneManager]: Transitioning to scene: pause
+[2026-06-29 00:23:57] [INFO] [SceneManager]: Transitioning to scene: settings
+[2026-06-29 00:24:05] [INFO] [SceneManager]: Transitioning to scene: pause
+[2026-06-29 00:24:06] [INFO] [SceneManager]: Transitioning to scene: settings
+[2026-06-29 00:24:08] [INFO] [SceneManager]: Transitioning to scene: pause
+[2026-06-29 00:24:10] [INFO] [StateManager]: State transitioned successfully: State.PAUSED -> State.GAMEPLAY
+[2026-06-29 00:24:10] [INFO] [SceneManager]: Transitioning to scene: loading
+[2026-06-29 00:24:11] [INFO] [SceneManager]: Transitioning to scene: gameplay
+[2026-06-29 00:24:12] [INFO] [StateManager]: State transitioned successfully: State.GAMEPLAY -> State.PAUSED
+[2026-06-29 00:24:12] [INFO] [SceneManager]: Transitioning to scene: pause
+[2026-06-29 00:24:14] [INFO] [SceneManager]: Transitioning to scene: exit_confirm
+[2026-06-29 00:24:16] [INFO] [StateManager]: State transitioned successfully: State.PAUSED -> State.MAIN_MENU
+[2026-06-29 00:24:16] [INFO] [SceneManager]: Transitioning to scene: menu
+[2026-06-29 00:24:19] [INFO] [SceneManager]: Transitioning to scene: exit_confirm
+[2026-06-29 00:24:21] [INFO] [StateManager]: State transitioned successfully: State.MAIN_MENU -> State.EXIT
+[2026-06-29 00:24:21] [INFO] [root]: Exit state detected. Initiating clean shutdown...
+[2026-06-29 00:24:21] [INFO] [GameLoop]: Stopping GameLoop request received.
+[2026-06-29 00:24:21] [INFO] [GameLoop]: GameLoop stopped.
+[2026-06-29 00:24:21] [INFO] [root]: Cleaning up resources and quitting Pygame.
+[2026-06-29 00:24:21] [INFO] [root]: Application terminated cleanly.
+[2026-06-29 00:31:54] [INFO] [root]: Logging initialized at level INFO. Log file: logs/game.log
+[2026-06-29 00:31:54] [INFO] [root]: Application starting up...
+[2026-06-29 00:31:55] [INFO] [root]: Pygame mixer initialized successfully.
+[2026-06-29 00:31:55] [INFO] [root]: Display window created: 1280x720 (Fullscreen: False)
+[2026-06-29 00:31:55] [INFO] [StateManager]: StateManager initialized in state: State.LOADING
+[2026-06-29 00:31:55] [INFO] [AssetManager]: AssetManager initialized (basic structure only, no real assets loaded).
+[2026-06-29 00:31:55] [INFO] [SceneManager]: Scene registered: splash
+[2026-06-29 00:31:55] [INFO] [SceneManager]: Scene registered: menu
+[2026-06-29 00:31:55] [INFO] [SceneManager]: Scene registered: mode_select
+[2026-06-29 00:31:55] [INFO] [SceneManager]: Scene registered: team_select
+[2026-06-29 00:31:55] [INFO] [SceneManager]: Scene registered: difficulty_select
+[2026-06-29 00:31:55] [INFO] [SceneManager]: Scene registered: loading
+[2026-06-29 00:31:55] [INFO] [SceneManager]: Scene registered: gameplay
+[2026-06-29 00:31:55] [INFO] [SceneManager]: Scene registered: pause
+[2026-06-29 00:31:55] [INFO] [SceneManager]: Scene registered: results
+[2026-06-29 00:31:55] [INFO] [SceneManager]: Scene registered: settings
+[2026-06-29 00:31:55] [INFO] [SceneManager]: Scene registered: credits
+[2026-06-29 00:31:55] [INFO] [SceneManager]: Scene registered: exit_confirm
+[2026-06-29 00:31:55] [INFO] [SceneManager]: Scene registered: tournament_bracket
+[2026-06-29 00:31:55] [INFO] [SceneManager]: Scene registered: career_hub
+[2026-06-29 00:31:55] [INFO] [SceneManager]: Scene registered: championship
+[2026-06-29 00:31:55] [INFO] [SceneManager]: Transitioning to scene: splash
+[2026-06-29 00:31:55] [INFO] [GameLoop]: Starting GameLoop with target FPS: 60
+[2026-06-29 00:31:58] [INFO] [StateManager]: State transitioned successfully: State.LOADING -> State.MAIN_MENU
+[2026-06-29 00:31:58] [INFO] [SceneManager]: Transitioning to scene: menu
+[2026-06-29 00:31:59] [INFO] [SceneManager]: Transitioning to scene: mode_select
+[2026-06-29 00:32:02] [INFO] [SceneManager]: Transitioning to scene: team_select
+[2026-06-29 00:32:05] [INFO] [SceneManager]: Transitioning to scene: difficulty_select
+[2026-06-29 00:32:07] [INFO] [SceneManager]: Transitioning to scene: tournament_bracket
+[2026-06-29 00:32:14] [INFO] [SceneManager]: Transitioning to scene: loading
+[2026-06-29 00:32:15] [INFO] [StateManager]: State transitioned successfully: State.MAIN_MENU -> State.GAMEPLAY
+[2026-06-29 00:32:15] [INFO] [SceneManager]: Transitioning to scene: gameplay
+[2026-06-29 00:32:37] [INFO] [StateManager]: State transitioned successfully: State.GAMEPLAY -> State.RESULT
+[2026-06-29 00:32:37] [INFO] [SceneManager]: Transitioning to scene: results
+[2026-06-29 00:32:41] [INFO] [StateManager]: State transitioned successfully: State.RESULT -> State.SAVING
+[2026-06-29 00:32:41] [INFO] [StateManager]: State transitioned successfully: State.SAVING -> State.MAIN_MENU
+[2026-06-29 00:32:41] [INFO] [SceneManager]: Transitioning to scene: tournament_bracket
+[2026-06-29 00:32:46] [INFO] [SceneManager]: Transitioning to scene: loading
+[2026-06-29 00:32:46] [INFO] [StateManager]: State transitioned successfully: State.MAIN_MENU -> State.GAMEPLAY
+[2026-06-29 00:32:46] [INFO] [SceneManager]: Transitioning to scene: gameplay
+[2026-06-29 00:33:05] [INFO] [StateManager]: State transitioned successfully: State.GAMEPLAY -> State.RESULT
+[2026-06-29 00:33:05] [INFO] [SceneManager]: Transitioning to scene: results
+[2026-06-29 00:33:08] [INFO] [StateManager]: State transitioned successfully: State.RESULT -> State.SAVING
+[2026-06-29 00:33:08] [INFO] [StateManager]: State transitioned successfully: State.SAVING -> State.MAIN_MENU
+[2026-06-29 00:33:08] [INFO] [SceneManager]: Transitioning to scene: tournament_bracket
+[2026-06-29 00:33:10] [INFO] [SceneManager]: Transitioning to scene: loading
+[2026-06-29 00:33:11] [INFO] [StateManager]: State transitioned successfully: State.MAIN_MENU -> State.GAMEPLAY
+[2026-06-29 00:33:11] [INFO] [SceneManager]: Transitioning to scene: gameplay
+[2026-06-29 00:34:08] [INFO] [StateManager]: State transitioned successfully: State.GAMEPLAY -> State.RESULT
+[2026-06-29 00:34:08] [INFO] [SceneManager]: Transitioning to scene: results
+[2026-06-29 00:34:10] [INFO] [StateManager]: State transitioned successfully: State.RESULT -> State.SAVING
+[2026-06-29 00:34:10] [INFO] [StateManager]: State transitioned successfully: State.SAVING -> State.MAIN_MENU
+[2026-06-29 00:34:10] [INFO] [SceneManager]: Transitioning to scene: championship
+[2026-06-29 00:34:12] [INFO] [SceneManager]: Transitioning to scene: menu
+[2026-06-29 00:34:16] [INFO] [root]: Quit window event detected.
+[2026-06-29 00:34:16] [INFO] [SceneManager]: Transitioning to scene: exit_confirm
+[2026-06-29 00:34:18] [INFO] [StateManager]: State transitioned successfully: State.MAIN_MENU -> State.EXIT
+[2026-06-29 00:34:18] [INFO] [root]: Exit state detected. Initiating clean shutdown...
+[2026-06-29 00:34:18] [INFO] [GameLoop]: Stopping GameLoop request received.
+[2026-06-29 00:34:18] [INFO] [GameLoop]: GameLoop stopped.
+[2026-06-29 00:34:18] [INFO] [root]: Cleaning up resources and quitting Pygame.
+[2026-06-29 00:34:18] [INFO] [root]: Application terminated cleanly.
