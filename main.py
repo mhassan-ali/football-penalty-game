@@ -12,7 +12,16 @@ from core.loop import GameLoop
 
 from scenes.splash import SplashScene
 from scenes.menu import MenuScene
+from scenes.mode_select import ModeSelectScene
+from scenes.team_select import TeamSelectScene
+from scenes.difficulty_select import DifficultySelectScene
+from scenes.loading import LoadingScene
 from scenes.gameplay import GameplayScene
+from scenes.pause import PauseScene
+from scenes.results import ResultsScene
+from scenes.settings import SettingsScene
+from scenes.credits import CreditsScene
+from scenes.exit_confirm import ExitConfirmScene
 
 def main() -> None:
     # 1. Load configuration
@@ -55,16 +64,26 @@ def main() -> None:
     scene_manager = SceneManager()
     asset_manager = AssetManager()
 
-    # 6. Instantiate and register Scenes
-    splash_scene = SplashScene("splash", state_manager, scene_manager, asset_manager)
-    menu_scene = MenuScene("menu", state_manager, scene_manager, asset_manager)
-    gameplay_scene = GameplayScene("gameplay", state_manager, scene_manager, asset_manager)
+    # 6. Instantiate and register all Scenes
+    scenes_map = {
+        "splash": SplashScene("splash", state_manager, scene_manager, asset_manager),
+        "menu": MenuScene("menu", state_manager, scene_manager, asset_manager),
+        "mode_select": ModeSelectScene("mode_select", state_manager, scene_manager, asset_manager),
+        "team_select": TeamSelectScene("team_select", state_manager, scene_manager, asset_manager),
+        "difficulty_select": DifficultySelectScene("difficulty_select", state_manager, scene_manager, asset_manager),
+        "loading": LoadingScene("loading", state_manager, scene_manager, asset_manager),
+        "gameplay": GameplayScene("gameplay", state_manager, scene_manager, asset_manager),
+        "pause": PauseScene("pause", state_manager, scene_manager, asset_manager),
+        "results": ResultsScene("results", state_manager, scene_manager, asset_manager),
+        "settings": SettingsScene("settings", state_manager, scene_manager, asset_manager),
+        "credits": CreditsScene("credits", state_manager, scene_manager, asset_manager),
+        "exit_confirm": ExitConfirmScene("exit_confirm", state_manager, scene_manager, asset_manager)
+    }
 
-    scene_manager.register_scene("splash", splash_scene)
-    scene_manager.register_scene("menu", menu_scene)
-    scene_manager.register_scene("gameplay", gameplay_scene)
+    for name, scene_obj in scenes_map.items():
+        scene_manager.register_scene(name, scene_obj)
 
-    # Boot the first scene
+    # Boot the splash scene
     scene_manager.switch_scene("splash")
 
     # 7. Create and configure the Game Loop
@@ -84,8 +103,8 @@ def main() -> None:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 logger.info("Quit window event detected.")
-                # Transition state to EXIT which triggers on_state_changed handler to stop loop
-                state_manager.change_state(State.EXIT)
+                # Route through Exit Confirmation dialog from current scene
+                scene_manager.switch_scene("exit_confirm", target_action="quit")
             else:
                 scene_manager.handle_event(event)
 
@@ -102,7 +121,6 @@ def main() -> None:
     except Exception as e:
         logger.critical(f"Crash detected in main loop: {e}", exc_info=True)
     finally:
-        # Clean up Pygame resources on shutdown
         logger.info("Cleaning up resources and quitting Pygame.")
         pygame.quit()
         logger.info("Application terminated cleanly.")

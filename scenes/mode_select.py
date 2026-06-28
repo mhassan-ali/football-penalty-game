@@ -3,16 +3,14 @@ from typing import Any
 from scenes.base import Scene
 from core.state_manager import State
 
-class MenuScene(Scene):
+class ModeSelectScene(Scene):
     def __init__(self, name: str, state_manager: Any, scene_manager: Any, asset_manager: Any) -> None:
         super().__init__(name, state_manager, scene_manager, asset_manager)
-        self.options = ["PLAY GAME", "SETTINGS", "CREDITS", "QUIT"]
+        self.options = ["PRACTICE MODE", "TOURNAMENT MODE (V1.5)", "CAREER MODE (V2.0)", "BACK"]
         self.selected_index = 0
 
     def on_enter(self, **kwargs: Any) -> None:
         self.selected_index = 0
-        if self.state_manager.current_state != State.MAIN_MENU:
-            self.state_manager.change_state(State.MAIN_MENU)
 
     def handle_event(self, event: pygame.event.Event) -> None:
         if event.type == pygame.KEYDOWN:
@@ -23,44 +21,53 @@ class MenuScene(Scene):
             elif event.key in (pygame.K_RETURN, pygame.K_SPACE):
                 self._select_option()
             elif event.key == pygame.K_ESCAPE:
-                self.scene_manager.switch_scene("exit_confirm", target_action="quit")
+                self.scene_manager.switch_scene("menu")
 
         elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+            # Simple click handling for options
             m_pos = event.pos
             screen_w = 1280
             for idx in range(len(self.options)):
-                rect = pygame.Rect(screen_w // 2 - 200, 270 + idx * 60, 400, 45)
+                rect = pygame.Rect(screen_w // 2 - 200, 280 + idx * 60, 400, 45)
                 if rect.collidepoint(m_pos):
                     self.selected_index = idx
                     self._select_option()
 
     def _select_option(self) -> None:
         if self.selected_index == 0:
-            self.scene_manager.switch_scene("mode_select")
-        elif self.selected_index == 1:
-            self.scene_manager.switch_scene("settings", origin_scene="menu")
-        elif self.selected_index == 2:
-            self.scene_manager.switch_scene("credits")
+            # Practice mode
+            self.scene_manager.switch_scene("team_select")
         elif self.selected_index == 3:
-            self.scene_manager.switch_scene("exit_confirm", target_action="quit")
+            # Back
+            self.scene_manager.switch_scene("menu")
 
     def render(self, screen: pygame.Surface) -> None:
         screen.fill((30, 34, 42))
         
-        font_title = self.asset_manager.get_font("default", 64)
-        title_surf = font_title.render("MAIN MENU", True, (255, 215, 0))
+        # Header
+        font_title = self.asset_manager.get_font("default", 54)
+        title_surf = font_title.render("SELECT GAME MODE", True, (255, 215, 0))
         title_rect = title_surf.get_rect(center=(screen.get_width() // 2, 140))
         screen.blit(title_surf, title_rect)
 
+        # Options
         font_opt = self.asset_manager.get_font("default", 32)
         for idx, option in enumerate(self.options):
-            color = (255, 255, 255) if idx == self.selected_index else (130, 140, 150)
+            is_selectable = idx in (0, 3)
+            if idx == self.selected_index:
+                color = (255, 255, 255)
+            elif not is_selectable:
+                color = (80, 90, 100)
+            else:
+                color = (130, 140, 150)
+                
             prefix = "> " if idx == self.selected_index else "  "
             opt_surf = font_opt.render(prefix + option, True, color)
-            opt_rect = opt_surf.get_rect(center=(screen.get_width() // 2, 280 + idx * 60))
+            opt_rect = opt_surf.get_rect(center=(screen.get_width() // 2, 300 + idx * 60))
             screen.blit(opt_surf, opt_rect)
 
+        # Navigation hint
         font_help = self.asset_manager.get_font("default", 20)
-        help_surf = font_help.render("UP/DOWN or W/S to navigate, ENTER to select. ESC to quit.", True, (150, 150, 150))
+        help_surf = font_help.render("UP/DOWN or W/S to navigate, ENTER to select. ESC for back.", True, (150, 150, 150))
         help_rect = help_surf.get_rect(center=(screen.get_width() // 2, screen.get_height() - 50))
         screen.blit(help_surf, help_rect)
