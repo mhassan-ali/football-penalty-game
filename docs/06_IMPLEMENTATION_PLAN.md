@@ -61,7 +61,7 @@ Phase 8  Accessibility, QA Hardening & Release Prep
 
 ### Phase 0 — Foundation & Tooling
 - **Goal:** A clean, runnable project foundation with quality tooling in place.
-- **Scope:** Repository setup, environment, formatting/linting/type-check tooling, test runner, logging baseline, documentation structure.
+- **Scope:**  environment, formatting/linting/type-check tooling, test runner, logging baseline, documentation structure.
 - **Dependencies:** None.
 - **Exit criteria:** The project runs an empty window; tooling and tests execute in CI; contribution standards are documented.
 

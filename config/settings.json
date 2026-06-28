@@ -1,0 +1,20 @@
+{
+    "display": {
+        "width": 1280,
+        "height": 720,
+        "fullscreen": false,
+        "title": "Penalty Shootout"
+    },
+    "gameplay": {
+        "target_fps": 60
+    },
+    "logging": {
+        "level": "INFO",
+        "file": "logs/game.log"
+    },
+    "audio": {
+        "master_volume": 1.0,
+        "music_volume": 0.8,
+        "sfx_volume": 0.9
+    }
+}
