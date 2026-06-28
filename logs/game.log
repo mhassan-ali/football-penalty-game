@@ -66,3 +66,39 @@
 [2026-06-28 23:44:47] [INFO] [GameLoop]: GameLoop stopped.
 [2026-06-28 23:44:47] [INFO] [root]: Cleaning up resources and quitting Pygame.
 [2026-06-28 23:44:48] [INFO] [root]: Application terminated cleanly.
+[2026-06-28 23:51:06] [INFO] [root]: Logging initialized at level INFO. Log file: logs/game.log
+[2026-06-28 23:51:06] [INFO] [root]: Application starting up...
+[2026-06-28 23:51:06] [INFO] [root]: Pygame mixer initialized successfully.
+[2026-06-28 23:51:06] [INFO] [root]: Display window created: 1280x720 (Fullscreen: False)
+[2026-06-28 23:51:06] [INFO] [StateManager]: StateManager initialized in state: State.LOADING
+[2026-06-28 23:51:06] [INFO] [AssetManager]: AssetManager initialized (basic structure only, no real assets loaded).
+[2026-06-28 23:51:06] [INFO] [SceneManager]: Scene registered: splash
+[2026-06-28 23:51:06] [INFO] [SceneManager]: Scene registered: menu
+[2026-06-28 23:51:06] [INFO] [SceneManager]: Scene registered: gameplay
+[2026-06-28 23:51:06] [INFO] [SceneManager]: Transitioning to scene: splash
+[2026-06-28 23:51:06] [INFO] [GameLoop]: Starting GameLoop with target FPS: 60
+[2026-06-28 23:51:08] [INFO] [StateManager]: State transitioned successfully: State.LOADING -> State.MAIN_MENU
+[2026-06-28 23:51:08] [INFO] [SceneManager]: Transitioning to scene: menu
+[2026-06-28 23:51:56] [INFO] [root]: Logging initialized at level INFO. Log file: logs/game.log
+[2026-06-28 23:51:56] [INFO] [root]: Application starting up...
+[2026-06-28 23:51:57] [INFO] [root]: Pygame mixer initialized successfully.
+[2026-06-28 23:51:57] [INFO] [root]: Display window created: 1280x720 (Fullscreen: False)
+[2026-06-28 23:51:57] [INFO] [StateManager]: StateManager initialized in state: State.LOADING
+[2026-06-28 23:51:57] [INFO] [AssetManager]: AssetManager initialized (basic structure only, no real assets loaded).
+[2026-06-28 23:51:57] [INFO] [SceneManager]: Scene registered: splash
+[2026-06-28 23:51:57] [INFO] [SceneManager]: Scene registered: menu
+[2026-06-28 23:51:57] [INFO] [SceneManager]: Scene registered: gameplay
+[2026-06-28 23:51:57] [INFO] [SceneManager]: Transitioning to scene: splash
+[2026-06-28 23:51:57] [INFO] [GameLoop]: Starting GameLoop with target FPS: 60
+[2026-06-28 23:51:59] [INFO] [StateManager]: State transitioned successfully: State.LOADING -> State.MAIN_MENU
+[2026-06-28 23:51:59] [INFO] [SceneManager]: Transitioning to scene: menu
+[2026-06-28 23:52:00] [INFO] [StateManager]: State transitioned successfully: State.MAIN_MENU -> State.GAMEPLAY
+[2026-06-28 23:52:00] [INFO] [SceneManager]: Transitioning to scene: gameplay
+[2026-06-28 23:52:40] [INFO] [StateManager]: State transitioned successfully: State.GAMEPLAY -> State.MAIN_MENU
+[2026-06-28 23:52:40] [INFO] [SceneManager]: Transitioning to scene: menu
+[2026-06-28 23:52:43] [INFO] [StateManager]: State transitioned successfully: State.MAIN_MENU -> State.EXIT
+[2026-06-28 23:52:43] [INFO] [root]: Exit state detected. Initiating clean shutdown...
+[2026-06-28 23:52:43] [INFO] [GameLoop]: Stopping GameLoop request received.
+[2026-06-28 23:52:43] [INFO] [GameLoop]: GameLoop stopped.
+[2026-06-28 23:52:43] [INFO] [root]: Cleaning up resources and quitting Pygame.
+[2026-06-28 23:52:43] [INFO] [root]: Application terminated cleanly.
