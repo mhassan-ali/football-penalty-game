@@ -1,6 +1,6 @@
 # Penalty Shootout — Documentation
 
-This directory is the documentation set for **Penalty Shootout**, a 2D football penalty shootout game (Python + Pygame, desktop). The documents are ordered to be read in sequence, moving from **what** the product is to **how** it  is architected and delivered.
+This directory is the documentation set for **Penalty Shootout**, a 2D football penalty shootout game (Python + Pygame, desktop). The documents are ordered to be read in sequence, moving from **what** the product is to **how** it is architected and delivered.
 
 ## Core Documents
 
