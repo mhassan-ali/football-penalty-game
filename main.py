@@ -76,6 +76,11 @@ def main() -> None:
     save_manager = SaveManager("save/savegame.json", config)
     scene_manager.save_manager = save_manager
 
+    from managers.audio_manager import AudioManager
+    audio_manager = AudioManager(save_manager)
+    scene_manager.audio_manager = audio_manager
+    audio_manager.play_music()
+
     # Restore in-progress tournament or career if saved
     from game.tournament import Tournament
     from game.career import Career

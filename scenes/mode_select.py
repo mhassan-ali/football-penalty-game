@@ -13,23 +13,34 @@ class ModeSelectScene(Scene):
         self.selected_index = 0
 
     def handle_event(self, event: pygame.event.Event) -> None:
+        audio_mgr = getattr(self.scene_manager, "audio_manager", None)
         if event.type == pygame.KEYDOWN:
             if event.key in (pygame.K_UP, pygame.K_w):
                 self.selected_index = (self.selected_index - 1) % len(self.options)
+                if audio_mgr:
+                    audio_mgr.play_sfx("hover")
             elif event.key in (pygame.K_DOWN, pygame.K_s):
                 self.selected_index = (self.selected_index + 1) % len(self.options)
+                if audio_mgr:
+                    audio_mgr.play_sfx("hover")
             elif event.key in (pygame.K_RETURN, pygame.K_SPACE):
+                if audio_mgr:
+                    audio_mgr.play_sfx("click")
                 self._select_option()
             elif event.key == pygame.K_ESCAPE:
+                if audio_mgr:
+                    audio_mgr.play_sfx("click")
                 self.scene_manager.switch_scene("menu")
 
         elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             m_pos = event.pos
             screen_w = 1280
             for idx in range(len(self.options)):
-                rect = pygame.Rect(screen_w // 2 - 200, 280 + idx * 60, 400, 45)
+                rect = pygame.Rect(screen_w // 2 - 200, 270 + idx * 60, 400, 45)
                 if rect.collidepoint(m_pos):
                     self.selected_index = idx
+                    if audio_mgr:
+                        audio_mgr.play_sfx("click")
                     self._select_option()
 
     def _select_option(self) -> None:
@@ -53,6 +64,7 @@ class ModeSelectScene(Scene):
             self.scene_manager.switch_scene("menu")
 
     def render(self, screen: pygame.Surface) -> None:
+        import math
         screen.fill((30, 34, 42))
         
         # Header
@@ -64,10 +76,19 @@ class ModeSelectScene(Scene):
         # Options
         font_opt = self.asset_manager.get_font("default", 32)
         for idx, option in enumerate(self.options):
-            color = (255, 255, 255) if idx == self.selected_index else (130, 140, 150)
-            prefix = "> " if idx == self.selected_index else "  "
+            is_sel = (idx == self.selected_index)
+            color = (255, 215, 0) if is_sel else (140, 150, 165)
+            
+            x_offset = int(6 * math.sin(pygame.time.get_ticks() * 0.008)) if is_sel else 0
+            prefix = "▶ " if is_sel else "  "
+            
+            if is_sel:
+                box_rect = pygame.Rect(screen.get_width() // 2 - 220 + x_offset, 275 + idx * 60, 440, 45)
+                pygame.draw.rect(screen, (50, 60, 75), box_rect, border_radius=6)
+                pygame.draw.rect(screen, (255, 215, 0), box_rect, width=2, border_radius=6)
+                
             opt_surf = font_opt.render(prefix + option, True, color)
-            opt_rect = opt_surf.get_rect(center=(screen.get_width() // 2, 300 + idx * 60))
+            opt_rect = opt_surf.get_rect(center=(screen.get_width() // 2 + x_offset, 297 + idx * 60))
             screen.blit(opt_surf, opt_rect)
 
         # Navigation hint
