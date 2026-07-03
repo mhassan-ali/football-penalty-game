@@ -22,6 +22,8 @@ from scenes.results import ResultsScene
 from scenes.settings import SettingsScene
 from scenes.credits import CreditsScene
 from scenes.exit_confirm import ExitConfirmScene
+from scenes.statistics import StatisticsScene
+from scenes.achievements import AchievementsScene
 
 from game.mode_manager import GameModeManager
 from scenes.tournament_bracket import TournamentBracketScene
@@ -102,7 +104,9 @@ def main() -> None:
         "exit_confirm": ExitConfirmScene("exit_confirm", state_manager, scene_manager, asset_manager),
         "tournament_bracket": TournamentBracketScene("tournament_bracket", state_manager, scene_manager, asset_manager),
         "career_hub": CareerHubScene("career_hub", state_manager, scene_manager, asset_manager),
-        "championship": ChampionshipScene("championship", state_manager, scene_manager, asset_manager)
+        "championship": ChampionshipScene("championship", state_manager, scene_manager, asset_manager),
+        "statistics": StatisticsScene("statistics", state_manager, scene_manager, asset_manager),
+        "achievements": AchievementsScene("achievements", state_manager, scene_manager, asset_manager)
     }
 
     for name, scene_obj in scenes_map.items():

@@ -88,6 +88,10 @@ class TestGameModesSceneIntegration(unittest.TestCase):
         self.mode_manager = GameModeManager()
         self.scene_manager.mode_manager = self.mode_manager
         self.asset_manager = AssetManager()
+        from managers.save_manager import SaveManager
+        self.test_dir = "tests/temp_modes_test"
+        self.save_manager = SaveManager(f"{self.test_dir}/savegame.json")
+        self.scene_manager.save_manager = self.save_manager
 
         self.scenes = {
             "mode_select": ModeSelectScene("mode_select", self.state_manager, self.scene_manager, self.asset_manager),
@@ -99,6 +103,12 @@ class TestGameModesSceneIntegration(unittest.TestCase):
         }
         for name, sc in self.scenes.items():
             self.scene_manager.register_scene(name, sc)
+
+    def tearDown(self) -> None:
+        import shutil
+        import os
+        if hasattr(self, "test_dir") and os.path.exists(self.test_dir):
+            shutil.rmtree(self.test_dir)
 
     def test_tournament_selection_routing(self):
         # 1. Mode Select -> Select Tournament

@@ -20,6 +20,8 @@ from scenes.exit_confirm import ExitConfirmScene
 from scenes.tournament_bracket import TournamentBracketScene
 from scenes.career_hub import CareerHubScene
 from scenes.championship import ChampionshipScene
+from scenes.statistics import StatisticsScene
+from scenes.achievements import AchievementsScene
 
 class TestNavigationFlow(unittest.TestCase):
     def setUp(self) -> None:
@@ -31,6 +33,10 @@ class TestNavigationFlow(unittest.TestCase):
         self.mode_manager = GameModeManager()
         self.scene_manager.mode_manager = self.mode_manager
         self.asset_manager = AssetManager()
+        from managers.save_manager import SaveManager
+        self.test_dir = "tests/temp_nav_test"
+        self.save_manager = SaveManager(f"{self.test_dir}/savegame.json")
+        self.scene_manager.save_manager = self.save_manager
 
         self.scenes = {
             "splash": SplashScene("splash", self.state_manager, self.scene_manager, self.asset_manager),
@@ -47,10 +53,18 @@ class TestNavigationFlow(unittest.TestCase):
             "exit_confirm": ExitConfirmScene("exit_confirm", self.state_manager, self.scene_manager, self.asset_manager),
             "tournament_bracket": TournamentBracketScene("tournament_bracket", self.state_manager, self.scene_manager, self.asset_manager),
             "career_hub": CareerHubScene("career_hub", self.state_manager, self.scene_manager, self.asset_manager),
-            "championship": ChampionshipScene("championship", self.state_manager, self.scene_manager, self.asset_manager)
+            "championship": ChampionshipScene("championship", self.state_manager, self.scene_manager, self.asset_manager),
+            "statistics": StatisticsScene("statistics", self.state_manager, self.scene_manager, self.asset_manager),
+            "achievements": AchievementsScene("achievements", self.state_manager, self.scene_manager, self.asset_manager)
         }
         for name, sc in self.scenes.items():
             self.scene_manager.register_scene(name, sc)
+
+    def tearDown(self) -> None:
+        import shutil
+        import os
+        if hasattr(self, "test_dir") and os.path.exists(self.test_dir):
+            shutil.rmtree(self.test_dir)
 
     def test_full_navigation_path(self):
         # 1. Start at Splash
@@ -134,3 +148,19 @@ class TestNavigationFlow(unittest.TestCase):
         self.scenes["exit_confirm"].selected_index = 1
         self.scenes["exit_confirm"]._confirm()
         self.assertEqual(self.scene_manager.active_scene.name, "pause")
+
+    def test_statistics_and_achievements_navigation(self):
+        # 1. Menu -> Statistics -> Back -> Menu
+        self.scene_manager.switch_scene("menu")
+        self.scenes["menu"].selected_index = 2  # STATISTICS
+        self.scenes["menu"]._select_option()
+        self.assertEqual(self.scene_manager.active_scene.name, "statistics")
+        self.scenes["statistics"]._go_back()
+        self.assertEqual(self.scene_manager.active_scene.name, "menu")
+
+        # 2. Menu -> Achievements -> Back -> Menu
+        self.scenes["menu"].selected_index = 3  # ACHIEVEMENTS
+        self.scenes["menu"]._select_option()
+        self.assertEqual(self.scene_manager.active_scene.name, "achievements")
+        self.scenes["achievements"]._go_back()
+        self.assertEqual(self.scene_manager.active_scene.name, "menu")
