@@ -39,10 +39,16 @@ class ModeSelectScene(Scene):
             self.scene_manager.switch_scene("team_select")
         elif self.selected_index == 1:
             mode_mgr.active_mode = "tournament"
-            self.scene_manager.switch_scene("team_select")
+            if mode_mgr.tournament and not mode_mgr.tournament.eliminated and mode_mgr.tournament.current_stage_idx < 3:
+                self.scene_manager.switch_scene("tournament_bracket")
+            else:
+                self.scene_manager.switch_scene("team_select")
         elif self.selected_index == 2:
             mode_mgr.active_mode = "career"
-            self.scene_manager.switch_scene("team_select")
+            if mode_mgr.career:
+                self.scene_manager.switch_scene("career_hub")
+            else:
+                self.scene_manager.switch_scene("team_select")
         elif self.selected_index == 3:
             self.scene_manager.switch_scene("menu")
 

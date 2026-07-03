@@ -41,14 +41,21 @@ class DifficultySelectScene(Scene):
             
         diff = self.difficulties[self.selected_index]
         mode_mgr = self.scene_manager.mode_manager
+        save_mgr = self.scene_manager.save_manager
         
         if mode_mgr.active_mode == "practice":
             self.scene_manager.switch_scene("loading", selected_team=self.selected_team, difficulty=diff)
         elif mode_mgr.active_mode == "tournament":
             mode_mgr.start_tournament(self.selected_team)
+            if save_mgr:
+                save_mgr.increment_stat("tournaments_played")
+                save_mgr.save_tournament(mode_mgr.tournament)
             self.scene_manager.switch_scene("tournament_bracket", difficulty=diff)
         elif mode_mgr.active_mode == "career":
             mode_mgr.start_career(self.selected_team)
+            if save_mgr:
+                save_mgr.increment_stat("careers_played")
+                save_mgr.save_career(mode_mgr.career)
             self.scene_manager.switch_scene("career_hub", difficulty=diff)
 
     def render(self, screen: pygame.Surface) -> None:

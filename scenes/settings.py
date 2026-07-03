@@ -13,6 +13,11 @@ class SettingsScene(Scene):
     def on_enter(self, **kwargs: Any) -> None:
         self.selected_index = 0
         self.origin_scene = kwargs.get("origin_scene", "menu")
+        save_mgr = self.scene_manager.save_manager
+        if save_mgr:
+            self.volumes[0] = int(save_mgr.data["settings"]["master_volume"] * 100)
+            self.volumes[1] = int(save_mgr.data["settings"]["music_volume"] * 100)
+            self.volumes[2] = int(save_mgr.data["settings"]["sfx_volume"] * 100)
 
     def handle_event(self, event: pygame.event.Event) -> None:
         if event.type == pygame.KEYDOWN:
@@ -44,6 +49,13 @@ class SettingsScene(Scene):
         if self.selected_index < 3:
             curr = self.volumes[self.selected_index]
             self.volumes[self.selected_index] = max(0, min(100, curr + delta))
+            
+            save_mgr = self.scene_manager.save_manager
+            if save_mgr:
+                keys = ["master_volume", "music_volume", "sfx_volume"]
+                key = keys[self.selected_index]
+                val = self.volumes[self.selected_index] / 100.0
+                save_mgr.update_setting(key, val)
 
     def _go_back(self) -> None:
         # Return to origin scene (menu or pause)

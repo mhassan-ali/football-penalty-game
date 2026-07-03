@@ -70,6 +70,21 @@ def main() -> None:
     mode_manager = GameModeManager()
     scene_manager.mode_manager = mode_manager
     asset_manager = AssetManager()
+    from managers.save_manager import SaveManager
+    save_manager = SaveManager("save/savegame.json", config)
+    scene_manager.save_manager = save_manager
+
+    # Restore in-progress tournament or career if saved
+    from game.tournament import Tournament
+    from game.career import Career
+    restored_t = save_manager.load_tournament(Tournament)
+    restored_c = save_manager.load_career(Career)
+    if restored_t:
+        mode_manager.active_mode = "tournament"
+        mode_manager.tournament = restored_t
+    elif restored_c:
+        mode_manager.active_mode = "career"
+        mode_manager.career = restored_c
 
     # 6. Instantiate and register all Scenes
     scenes_map = {

@@ -152,7 +152,8 @@ class GameplayScene(Scene):
                 player_score=self.shootout.player_score,
                 opponent_score=self.shootout.opponent_score,
                 selected_team=self.selected_team,
-                difficulty=self.difficulty
+                difficulty=self.difficulty,
+                player_saves=self.shootout.opponent_kicks.count("save")
             )
         else:
             self._reset_attempt()

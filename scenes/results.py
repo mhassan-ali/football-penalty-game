@@ -13,6 +13,7 @@ class ResultsScene(Scene):
         self.opponent_score = 0
         self.selected_team = "BRAZIL"
         self.difficulty = "medium"
+        self.player_saves = 0
 
     def on_enter(self, **kwargs: Any) -> None:
         self.selected_index = 0
@@ -21,6 +22,7 @@ class ResultsScene(Scene):
         self.opponent_score = kwargs.get("opponent_score", 0)
         self.selected_team = kwargs.get("selected_team", "BRAZIL")
         self.difficulty = kwargs.get("difficulty", "medium")
+        self.player_saves = kwargs.get("player_saves", 0)
         
         # Ensure state is RESULT
         if self.state_manager.current_state != State.RESULT:
@@ -34,6 +36,36 @@ class ResultsScene(Scene):
             mode_mgr.tournament.advance_stage(player_won)
         elif mode_mgr.active_mode == "career" and mode_mgr.career:
             mode_mgr.career.record_match(player_won)
+
+        # Update stats & achievements & save game
+        save_mgr = self.scene_manager.save_manager
+        if save_mgr:
+            save_mgr.increment_stat("matches_played")
+            if player_won:
+                save_mgr.increment_stat("matches_won")
+            save_mgr.increment_stat("goals_scored", self.player_score)
+            save_mgr.increment_stat("saves_made", self.player_saves)
+
+            if mode_mgr.active_mode == "tournament" and mode_mgr.tournament:
+                t = mode_mgr.tournament
+                if t.winner == t.player_team:
+                    save_mgr.increment_stat("tournaments_won")
+                    save_mgr.check_tournament_champion()
+                    save_mgr.save_tournament(None)
+                elif t.eliminated:
+                    save_mgr.save_tournament(None)
+                else:
+                    save_mgr.save_tournament(t)
+            elif mode_mgr.active_mode == "career" and mode_mgr.career:
+                c = mode_mgr.career
+                if c.is_finished():
+                    save_mgr.increment_stat("careers_completed")
+                    save_mgr.check_career_legend()
+                    save_mgr.save_career(None)
+                else:
+                    save_mgr.save_career(c)
+
+            save_mgr.check_match_achievements(player_won, self.player_score, self.player_saves, self.opponent_score)
 
     def handle_event(self, event: pygame.event.Event) -> None:
         if event.type == pygame.KEYDOWN:
@@ -65,6 +97,15 @@ class ResultsScene(Scene):
             # Re-initialize the active mode round back to same state
             # If in tournament or career, we need to roll back the result we just recorded!
             # Since we just advanced stage or recorded match in on_enter:
+            save_mgr = self.scene_manager.save_manager
+            player_won = (self.winner == "player")
+            if save_mgr:
+                save_mgr.increment_stat("matches_played", -1)
+                if player_won:
+                    save_mgr.increment_stat("matches_won", -1)
+                save_mgr.increment_stat("goals_scored", -self.player_score)
+                save_mgr.increment_stat("saves_made", -self.player_saves)
+
             if mode_mgr.active_mode == "tournament" and mode_mgr.tournament:
                 # Rollback tournament stage indices
                 t = mode_mgr.tournament
@@ -80,6 +121,10 @@ class ResultsScene(Scene):
                         t.current_stage_idx = max(0, t.current_stage_idx - 1)
                     stage = t.stages[t.current_stage_idx]
                     t.results[stage] = []
+                
+                if save_mgr:
+                    save_mgr.save_tournament(t)
+
             elif mode_mgr.active_mode == "career" and mode_mgr.career:
                 # Rollback career index
                 c = mode_mgr.career
@@ -91,6 +136,9 @@ class ResultsScene(Scene):
                         c.points -= 3
                     else:
                         c.losses -= 1
+                
+                if save_mgr:
+                    save_mgr.save_career(c)
             
             self.scene_manager.switch_scene("loading", selected_team=self.selected_team, difficulty=self.difficulty)
             
