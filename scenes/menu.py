@@ -6,7 +6,7 @@ from core.state_manager import State
 class MenuScene(Scene):
     def __init__(self, name: str, state_manager: Any, scene_manager: Any, asset_manager: Any) -> None:
         super().__init__(name, state_manager, scene_manager, asset_manager)
-        self.options = ["PLAY GAME", "SETTINGS", "CREDITS", "QUIT"]
+        self.options = ["PLAY GAME", "SETTINGS", "STATISTICS", "ACHIEVEMENTS", "CREDITS", "QUIT"]
         self.selected_index = 0
 
     def on_enter(self, **kwargs: Any) -> None:
@@ -29,7 +29,7 @@ class MenuScene(Scene):
             m_pos = event.pos
             screen_w = 1280
             for idx in range(len(self.options)):
-                rect = pygame.Rect(screen_w // 2 - 200, 270 + idx * 60, 400, 45)
+                rect = pygame.Rect(screen_w // 2 - 200, 210 + idx * 55, 400, 45)
                 if rect.collidepoint(m_pos):
                     self.selected_index = idx
                     self._select_option()
@@ -40,8 +40,12 @@ class MenuScene(Scene):
         elif self.selected_index == 1:
             self.scene_manager.switch_scene("settings", origin_scene="menu")
         elif self.selected_index == 2:
-            self.scene_manager.switch_scene("credits")
+            self.scene_manager.switch_scene("statistics", origin_scene="menu")
         elif self.selected_index == 3:
+            self.scene_manager.switch_scene("achievements")
+        elif self.selected_index == 4:
+            self.scene_manager.switch_scene("credits")
+        elif self.selected_index == 5:
             self.scene_manager.switch_scene("exit_confirm", target_action="quit")
 
     def render(self, screen: pygame.Surface) -> None:
@@ -57,7 +61,7 @@ class MenuScene(Scene):
             color = (255, 255, 255) if idx == self.selected_index else (130, 140, 150)
             prefix = "> " if idx == self.selected_index else "  "
             opt_surf = font_opt.render(prefix + option, True, color)
-            opt_rect = opt_surf.get_rect(center=(screen.get_width() // 2, 280 + idx * 60))
+            opt_rect = opt_surf.get_rect(center=(screen.get_width() // 2, 230 + idx * 55))
             screen.blit(opt_surf, opt_rect)
 
         font_help = self.asset_manager.get_font("default", 20)

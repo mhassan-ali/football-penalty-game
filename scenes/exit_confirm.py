@@ -43,6 +43,12 @@ class ExitConfirmScene(Scene):
             if self.target_action == "quit":
                 self.state_manager.change_state(State.EXIT)
             elif self.target_action == "menu":
+                mode_mgr = self.scene_manager.mode_manager
+                if self.origin_scene == "tournament_bracket":
+                    mode_mgr.tournament = None
+                    save_mgr = self.scene_manager.save_manager
+                    if save_mgr:
+                        save_mgr.save_tournament(None)
                 self.state_manager.change_state(State.MAIN_MENU)
                 self.scene_manager.switch_scene("menu")
         else:
