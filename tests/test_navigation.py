@@ -37,6 +37,7 @@ class TestNavigationFlow(unittest.TestCase):
         self.test_dir = "tests/temp_nav_test"
         self.save_manager = SaveManager(f"{self.test_dir}/savegame.json")
         self.scene_manager.save_manager = self.save_manager
+        self.scene_manager.transitions_enabled = False
 
         self.scenes = {
             "splash": SplashScene("splash", self.state_manager, self.scene_manager, self.asset_manager),

@@ -15,14 +15,23 @@ class PauseScene(Scene):
             self.state_manager.change_state(State.PAUSED)
 
     def handle_event(self, event: pygame.event.Event) -> None:
+        audio_mgr = getattr(self.scene_manager, "audio_manager", None)
         if event.type == pygame.KEYDOWN:
             if event.key in (pygame.K_UP, pygame.K_w):
                 self.selected_index = (self.selected_index - 1) % len(self.options)
+                if audio_mgr:
+                    audio_mgr.play_sfx("hover")
             elif event.key in (pygame.K_DOWN, pygame.K_s):
                 self.selected_index = (self.selected_index + 1) % len(self.options)
+                if audio_mgr:
+                    audio_mgr.play_sfx("hover")
             elif event.key in (pygame.K_RETURN, pygame.K_SPACE):
+                if audio_mgr:
+                    audio_mgr.play_sfx("click")
                 self._select_option()
             elif event.key == pygame.K_ESCAPE:
+                if audio_mgr:
+                    audio_mgr.play_sfx("click")
                 self._resume()
 
         elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
@@ -32,6 +41,8 @@ class PauseScene(Scene):
                 rect = pygame.Rect(screen_w // 2 - 200, 260 + idx * 60, 400, 45)
                 if rect.collidepoint(m_pos):
                     self.selected_index = idx
+                    if audio_mgr:
+                        audio_mgr.play_sfx("click")
                     self._select_option()
 
     def _resume(self) -> None:
@@ -53,6 +64,7 @@ class PauseScene(Scene):
             self.scene_manager.switch_scene("exit_confirm", target_action="menu", origin_scene=self.name)
 
     def render(self, screen: pygame.Surface) -> None:
+        import math
         # Semi-transparent dark overlay over whatever was rendered before or solid dark background
         wash = pygame.Surface((screen.get_width(), screen.get_height()), pygame.SRCALPHA)
         wash.fill((15, 18, 24, 230))
@@ -65,10 +77,19 @@ class PauseScene(Scene):
 
         font_opt = self.asset_manager.get_font("default", 32)
         for idx, option in enumerate(self.options):
-            color = (255, 255, 255) if idx == self.selected_index else (130, 140, 150)
-            prefix = "> " if idx == self.selected_index else "  "
+            is_sel = (idx == self.selected_index)
+            color = (255, 215, 0) if is_sel else (140, 150, 165)
+            
+            x_offset = int(6 * math.sin(pygame.time.get_ticks() * 0.008)) if is_sel else 0
+            prefix = "▶ " if is_sel else "  "
+            
+            if is_sel:
+                box_rect = pygame.Rect(screen.get_width() // 2 - 220 + x_offset, 245 + idx * 60, 440, 45)
+                pygame.draw.rect(screen, (50, 60, 75), box_rect, border_radius=6)
+                pygame.draw.rect(screen, (255, 215, 0), box_rect, width=2, border_radius=6)
+                
             opt_surf = font_opt.render(prefix + option, True, color)
-            opt_rect = opt_surf.get_rect(center=(screen.get_width() // 2, 270 + idx * 60))
+            opt_rect = opt_surf.get_rect(center=(screen.get_width() // 2 + x_offset, 267 + idx * 60))
             screen.blit(opt_surf, opt_rect)
 
         font_help = self.asset_manager.get_font("default", 20)

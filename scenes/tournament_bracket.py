@@ -15,25 +15,34 @@ class TournamentBracketScene(Scene):
             self.difficulty = kwargs["difficulty"]
 
     def handle_event(self, event: pygame.event.Event) -> None:
+        audio_mgr = getattr(self.scene_manager, "audio_manager", None)
         if event.type == pygame.KEYDOWN:
             if event.key in (pygame.K_UP, pygame.K_w):
                 self.selected_index = (self.selected_index - 1) % len(self.options)
+                if audio_mgr:
+                    audio_mgr.play_sfx("hover")
             elif event.key in (pygame.K_DOWN, pygame.K_s):
                 self.selected_index = (self.selected_index + 1) % len(self.options)
+                if audio_mgr:
+                    audio_mgr.play_sfx("hover")
             elif event.key in (pygame.K_RETURN, pygame.K_SPACE):
+                if audio_mgr:
+                    audio_mgr.play_sfx("click")
                 self._select_option()
             elif event.key == pygame.K_ESCAPE:
+                if audio_mgr:
+                    audio_mgr.play_sfx("click")
                 self.scene_manager.switch_scene("exit_confirm", target_action="menu", origin_scene=self.name)
 
         elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             m_pos = event.pos
-            # Buttons are placed at the bottom
-            # Button 1: Start Next Match, Button 2: Abandon
             screen_w = 1280
             for idx in range(len(self.options)):
-                rect = pygame.Rect(screen_w // 2 - 200, 560 + idx * 55, 400, 45)
+                rect = pygame.Rect(screen_w // 2 - 200, 560 + idx * 50, 400, 45)
                 if rect.collidepoint(m_pos):
                     self.selected_index = idx
+                    if audio_mgr:
+                        audio_mgr.play_sfx("click")
                     self._select_option()
 
     def _select_option(self) -> None:
@@ -55,12 +64,13 @@ class TournamentBracketScene(Scene):
             self.scene_manager.switch_scene("exit_confirm", target_action="menu", origin_scene=self.name)
 
     def render(self, screen: pygame.Surface) -> None:
-        screen.fill((30, 34, 42))
+        import math
+        screen.fill((20, 24, 30))
         
         # Header
-        font_title = self.asset_manager.get_font("default", 54)
+        font_title = self.asset_manager.get_font("default", 48)
         title_surf = font_title.render("TOURNAMENT BRACKET", True, (255, 215, 0))
-        title_rect = title_surf.get_rect(center=(screen.get_width() // 2, 80))
+        title_rect = title_surf.get_rect(center=(screen.get_width() // 2, 50))
         screen.blit(title_surf, title_rect)
 
         mode_mgr = self.scene_manager.mode_manager
@@ -68,25 +78,19 @@ class TournamentBracketScene(Scene):
         if not t:
             return
 
-        # Render stage sub-header
-        font_stage = self.asset_manager.get_font("default", 28)
-        current_stage = t.stages[t.current_stage_idx] if t.current_stage_idx < 3 else "CHAMPIONSHIP COMPLETE"
-        stage_surf = font_stage.render(f"Current Round: {current_stage.upper()}", True, (240, 240, 240))
-        stage_rect = stage_surf.get_rect(center=(screen.get_width() // 2, 130))
-        screen.blit(stage_surf, stage_rect)
-
-        # Draw Bracket columns (Quarter, Semi, Final)
-        font_teams = self.asset_manager.get_font("default", 18)
+        font_teams = self.asset_manager.get_font("default", 16)
         
-        col_w = 280
-        col_spacing = 80
-        start_x = (screen.get_width() - (3 * col_w + 2 * col_spacing)) // 2
+        # Layout metrics
+        start_x = 80
+        col_w = 320
+        col_spacing = 60
         
         # 1. Render Quarter Finals column
-        self._render_bracket_column(screen, start_x, 170, col_w, "QUARTER FINAL", t.bracket["Quarter Final"], t.results["Quarter Final"], t.player_team, font_teams)
+        qf_y = 110
+        self._render_bracket_column(screen, start_x, qf_y, col_w, "QUARTER FINAL", t.bracket["Quarter Final"], t.results["Quarter Final"], t.player_team, font_teams)
 
         # 2. Render Semi Finals column
-        sf_y = 230
+        sf_y = 200
         self._render_bracket_column(screen, start_x + col_w + col_spacing, sf_y, col_w, "SEMI FINAL", t.bracket["Semi Final"], t.results["Semi Final"], t.player_team, font_teams)
 
         # 3. Render Final column
@@ -96,10 +100,19 @@ class TournamentBracketScene(Scene):
         # Render options at the bottom
         font_opt = self.asset_manager.get_font("default", 28)
         for idx, option in enumerate(self.options):
-            color = (255, 255, 255) if idx == self.selected_index else (130, 140, 150)
-            prefix = "> " if idx == self.selected_index else "  "
+            is_sel = (idx == self.selected_index)
+            color = (255, 215, 0) if is_sel else (140, 150, 165)
+            
+            x_offset = int(6 * math.sin(pygame.time.get_ticks() * 0.008)) if is_sel else 0
+            prefix = "▶ " if is_sel else "  "
+            
+            if is_sel:
+                box_rect = pygame.Rect(screen.get_width() // 2 - 220 + x_offset, 535 + idx * 50, 440, 45)
+                pygame.draw.rect(screen, (50, 60, 75), box_rect, border_radius=6)
+                pygame.draw.rect(screen, (255, 215, 0), box_rect, width=2, border_radius=6)
+                
             opt_surf = font_opt.render(prefix + option, True, color)
-            opt_rect = opt_surf.get_rect(center=(screen.get_width() // 2, 560 + idx * 50))
+            opt_rect = opt_surf.get_rect(center=(screen.get_width() // 2 + x_offset, 557 + idx * 50))
             screen.blit(opt_surf, opt_rect)
 
     def _render_bracket_column(self, screen: pygame.Surface, x: int, y_start: int, width: int, header: str, matches: list, winners: list, player_team: str, font: pygame.font.Font) -> None:

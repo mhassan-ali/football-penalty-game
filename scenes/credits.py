@@ -8,9 +8,13 @@ class CreditsScene(Scene):
 
     def handle_event(self, event: pygame.event.Event) -> None:
         if event.type in (pygame.KEYDOWN, pygame.MOUSEBUTTONDOWN):
+            audio_mgr = getattr(self.scene_manager, "audio_manager", None)
+            if audio_mgr:
+                audio_mgr.play_sfx("click")
             self.scene_manager.switch_scene("menu")
 
     def render(self, screen: pygame.Surface) -> None:
+        import math
         screen.fill((30, 34, 42))
         
         font_title = self.asset_manager.get_font("default", 54)
@@ -38,6 +42,8 @@ class CreditsScene(Scene):
             screen.blit(txt_surf, txt_rect)
 
         font_help = self.asset_manager.get_font("default", 20)
-        help_surf = font_help.render("Press any key or click to return to Main Menu.", True, (150, 150, 150))
-        help_rect = help_surf.get_rect(center=(screen.get_width() // 2, screen.get_height() - 40))
+        # Pulsing slide animation
+        x_offset = int(6 * math.sin(pygame.time.get_ticks() * 0.008))
+        help_surf = font_help.render("▶ Press any key or click to return to Main Menu.", True, (255, 215, 0))
+        help_rect = help_surf.get_rect(center=(screen.get_width() // 2 + x_offset, screen.get_height() - 40))
         screen.blit(help_surf, help_rect)

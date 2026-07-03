@@ -257,3 +257,68 @@
 [2026-06-29 00:34:18] [INFO] [GameLoop]: GameLoop stopped.
 [2026-06-29 00:34:18] [INFO] [root]: Cleaning up resources and quitting Pygame.
 [2026-06-29 00:34:18] [INFO] [root]: Application terminated cleanly.
+[2026-07-04 01:05:59] [INFO] [root]: Logging initialized at level INFO. Log file: logs/game.log
+[2026-07-04 01:05:59] [INFO] [root]: Application starting up...
+[2026-07-04 01:05:59] [INFO] [root]: Pygame mixer initialized successfully.
+[2026-07-04 01:05:59] [INFO] [root]: Display window created: 1280x720 (Fullscreen: False)
+[2026-07-04 01:05:59] [INFO] [StateManager]: StateManager initialized in state: State.LOADING
+[2026-07-04 01:05:59] [INFO] [AssetManager]: AssetManager initialized (basic structure only, no real assets loaded).
+[2026-07-04 01:05:59] [INFO] [SaveManager]: Save file not found at save/savegame.json. Starting with fresh profile.
+[2026-07-04 01:05:59] [INFO] [AudioManager]: AudioManager successfully initialized and synthesized sounds.
+[2026-07-04 01:05:59] [INFO] [SceneManager]: Scene registered: splash
+[2026-07-04 01:05:59] [INFO] [SceneManager]: Scene registered: menu
+[2026-07-04 01:05:59] [INFO] [SceneManager]: Scene registered: mode_select
+[2026-07-04 01:05:59] [INFO] [SceneManager]: Scene registered: team_select
+[2026-07-04 01:05:59] [INFO] [SceneManager]: Scene registered: difficulty_select
+[2026-07-04 01:05:59] [INFO] [SceneManager]: Scene registered: loading
+[2026-07-04 01:05:59] [INFO] [SceneManager]: Scene registered: gameplay
+[2026-07-04 01:05:59] [INFO] [SceneManager]: Scene registered: pause
+[2026-07-04 01:05:59] [INFO] [SceneManager]: Scene registered: results
+[2026-07-04 01:05:59] [INFO] [SceneManager]: Scene registered: settings
+[2026-07-04 01:05:59] [INFO] [SceneManager]: Scene registered: credits
+[2026-07-04 01:05:59] [INFO] [SceneManager]: Scene registered: exit_confirm
+[2026-07-04 01:05:59] [INFO] [SceneManager]: Scene registered: tournament_bracket
+[2026-07-04 01:05:59] [INFO] [SceneManager]: Scene registered: career_hub
+[2026-07-04 01:05:59] [INFO] [SceneManager]: Scene registered: championship
+[2026-07-04 01:05:59] [INFO] [SceneManager]: Scene registered: statistics
+[2026-07-04 01:05:59] [INFO] [SceneManager]: Scene registered: achievements
+[2026-07-04 01:05:59] [INFO] [SceneManager]: Transitioning immediately to scene: splash
+[2026-07-04 01:05:59] [INFO] [GameLoop]: Starting GameLoop with target FPS: 60
+[2026-07-04 01:06:01] [INFO] [StateManager]: State transitioned successfully: State.LOADING -> State.MAIN_MENU
+[2026-07-04 01:06:04] [INFO] [root]: Quit window event detected.
+[2026-07-04 01:06:05] [INFO] [root]: Quit window event detected.
+[2026-07-04 01:06:07] [INFO] [root]: Quit window event detected.
+[2026-07-04 01:06:11] [INFO] [root]: Cleaning up resources and quitting Pygame.
+[2026-07-04 01:06:11] [INFO] [root]: Application terminated cleanly.
+[2026-07-04 01:06:25] [INFO] [root]: Logging initialized at level INFO. Log file: logs/game.log
+[2026-07-04 01:06:25] [INFO] [root]: Application starting up...
+[2026-07-04 01:06:25] [INFO] [root]: Pygame mixer initialized successfully.
+[2026-07-04 01:06:25] [INFO] [root]: Display window created: 1280x720 (Fullscreen: False)
+[2026-07-04 01:06:25] [INFO] [StateManager]: StateManager initialized in state: State.LOADING
+[2026-07-04 01:06:25] [INFO] [AssetManager]: AssetManager initialized (basic structure only, no real assets loaded).
+[2026-07-04 01:06:25] [INFO] [SaveManager]: Save file not found at save/savegame.json. Starting with fresh profile.
+[2026-07-04 01:06:26] [INFO] [AudioManager]: AudioManager successfully initialized and synthesized sounds.
+[2026-07-04 01:06:26] [INFO] [SceneManager]: Scene registered: splash
+[2026-07-04 01:06:26] [INFO] [SceneManager]: Scene registered: menu
+[2026-07-04 01:06:26] [INFO] [SceneManager]: Scene registered: mode_select
+[2026-07-04 01:06:26] [INFO] [SceneManager]: Scene registered: team_select
+[2026-07-04 01:06:26] [INFO] [SceneManager]: Scene registered: difficulty_select
+[2026-07-04 01:06:26] [INFO] [SceneManager]: Scene registered: loading
+[2026-07-04 01:06:26] [INFO] [SceneManager]: Scene registered: gameplay
+[2026-07-04 01:06:26] [INFO] [SceneManager]: Scene registered: pause
+[2026-07-04 01:06:26] [INFO] [SceneManager]: Scene registered: results
+[2026-07-04 01:06:26] [INFO] [SceneManager]: Scene registered: settings
+[2026-07-04 01:06:26] [INFO] [SceneManager]: Scene registered: credits
+[2026-07-04 01:06:26] [INFO] [SceneManager]: Scene registered: exit_confirm
+[2026-07-04 01:06:26] [INFO] [SceneManager]: Scene registered: tournament_bracket
+[2026-07-04 01:06:26] [INFO] [SceneManager]: Scene registered: career_hub
+[2026-07-04 01:06:26] [INFO] [SceneManager]: Scene registered: championship
+[2026-07-04 01:06:26] [INFO] [SceneManager]: Scene registered: statistics
+[2026-07-04 01:06:26] [INFO] [SceneManager]: Scene registered: achievements
+[2026-07-04 01:06:26] [INFO] [SceneManager]: Transitioning immediately to scene: splash
+[2026-07-04 01:06:26] [INFO] [GameLoop]: Starting GameLoop with target FPS: 60
+[2026-07-04 01:06:28] [INFO] [StateManager]: State transitioned successfully: State.LOADING -> State.MAIN_MENU
+[2026-07-04 01:06:32] [INFO] [root]: Quit window event detected.
+[2026-07-04 01:06:33] [INFO] [root]: Quit window event detected.
+[2026-07-04 01:06:36] [INFO] [root]: Cleaning up resources and quitting Pygame.
+[2026-07-04 01:06:36] [INFO] [root]: Application terminated cleanly.

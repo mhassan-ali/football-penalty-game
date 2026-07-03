@@ -25,6 +25,11 @@ class AudioManager:
     def _setup_channels(self) -> None:
         if not self.mixer_initialized:
             return
+        # Reserve channels 0 and 1 for music and ambience
+        try:
+            pygame.mixer.set_reserved(2)
+        except Exception as e:
+            logger.warning(f"Could not set reserved channels: {e}")
         # Channel 0 for looping background music
         self.music_channel = pygame.mixer.Channel(0)
         # Channel 1 for looping crowd ambience
@@ -108,15 +113,7 @@ class AudioManager:
             return
         snd = self.sounds.get(name)
         if snd:
-            # Find a free channel or let pygame pick a channel (channels 2 and above)
-            channel = pygame.mixer.find_channel(True)
-            if channel:
-                # Make sure we don't play sfx on music/ambience reserved channels
-                if channel.get_id() >= 2:
-                    channel.play(snd)
-            else:
-                # Fallback to direct play if no free channels
-                snd.play()
+            snd.play()
 
     # --- PCM Audio Synthesizers ---
 

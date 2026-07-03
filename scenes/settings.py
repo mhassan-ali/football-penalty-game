@@ -20,19 +20,32 @@ class SettingsScene(Scene):
             self.volumes[2] = int(save_mgr.data["settings"]["sfx_volume"] * 100)
 
     def handle_event(self, event: pygame.event.Event) -> None:
+        audio_mgr = getattr(self.scene_manager, "audio_manager", None)
         if event.type == pygame.KEYDOWN:
             if event.key in (pygame.K_UP, pygame.K_w):
                 self.selected_index = (self.selected_index - 1) % len(self.options)
+                if audio_mgr:
+                    audio_mgr.play_sfx("hover")
             elif event.key in (pygame.K_DOWN, pygame.K_s):
                 self.selected_index = (self.selected_index + 1) % len(self.options)
+                if audio_mgr:
+                    audio_mgr.play_sfx("hover")
             elif event.key in (pygame.K_LEFT, pygame.K_a):
                 self._adjust_volume(-10)
+                if audio_mgr:
+                    audio_mgr.play_sfx("hover")
             elif event.key in (pygame.K_RIGHT, pygame.K_d):
                 self._adjust_volume(10)
+                if audio_mgr:
+                    audio_mgr.play_sfx("hover")
             elif event.key in (pygame.K_RETURN, pygame.K_SPACE):
+                if audio_mgr:
+                    audio_mgr.play_sfx("click")
                 if self.selected_index == 3:
                     self._go_back()
             elif event.key == pygame.K_ESCAPE:
+                if audio_mgr:
+                    audio_mgr.play_sfx("click")
                 self._go_back()
 
         elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
@@ -42,6 +55,8 @@ class SettingsScene(Scene):
                 rect = pygame.Rect(screen_w // 2 - 200, 240 + idx * 65, 400, 50)
                 if rect.collidepoint(m_pos):
                     self.selected_index = idx
+                    if audio_mgr:
+                        audio_mgr.play_sfx("click")
                     if idx == 3:
                         self._go_back()
 
@@ -56,12 +71,17 @@ class SettingsScene(Scene):
                 key = keys[self.selected_index]
                 val = self.volumes[self.selected_index] / 100.0
                 save_mgr.update_setting(key, val)
+                
+            audio_mgr = getattr(self.scene_manager, "audio_manager", None)
+            if audio_mgr:
+                audio_mgr.update_volumes()
 
     def _go_back(self) -> None:
         # Return to origin scene (menu or pause)
         self.scene_manager.switch_scene(self.origin_scene)
 
     def render(self, screen: pygame.Surface) -> None:
+        import math
         screen.fill((30, 34, 42))
         
         font_title = self.asset_manager.get_font("default", 54)
@@ -71,8 +91,11 @@ class SettingsScene(Scene):
 
         font_opt = self.asset_manager.get_font("default", 32)
         for idx, option in enumerate(self.options):
-            color = (255, 255, 255) if idx == self.selected_index else (130, 140, 150)
-            prefix = "> " if idx == self.selected_index else "  "
+            is_sel = (idx == self.selected_index)
+            color = (255, 215, 0) if is_sel else (140, 150, 165)
+            
+            x_offset = int(6 * math.sin(pygame.time.get_ticks() * 0.008)) if is_sel else 0
+            prefix = "▶ " if is_sel else "  "
             
             if idx < 3:
                 val_str = f"<{self.volumes[idx]}%>"
@@ -80,8 +103,13 @@ class SettingsScene(Scene):
             else:
                 label_str = f"{prefix}{option}"
 
+            if is_sel:
+                box_rect = pygame.Rect(screen.get_width() // 2 - 240 + x_offset, 225 + idx * 65, 480, 50)
+                pygame.draw.rect(screen, (50, 60, 75), box_rect, border_radius=6)
+                pygame.draw.rect(screen, (255, 215, 0), box_rect, width=2, border_radius=6)
+
             opt_surf = font_opt.render(label_str, True, color)
-            opt_rect = opt_surf.get_rect(center=(screen.get_width() // 2, 250 + idx * 65))
+            opt_rect = opt_surf.get_rect(center=(screen.get_width() // 2 + x_offset, 250 + idx * 65))
             screen.blit(opt_surf, opt_rect)
 
         font_help = self.asset_manager.get_font("default", 20)

@@ -7,19 +7,25 @@ class AchievementsScene(Scene):
         super().__init__(name, state_manager, scene_manager, asset_manager)
 
     def handle_event(self, event: pygame.event.Event) -> None:
+        audio_mgr = getattr(self.scene_manager, "audio_manager", None)
         if event.type == pygame.KEYDOWN:
             if event.key in (pygame.K_RETURN, pygame.K_SPACE, pygame.K_ESCAPE):
+                if audio_mgr:
+                    audio_mgr.play_sfx("click")
                 self._go_back()
         elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             width = 1280
             rect = pygame.Rect(width // 2 - 100, 620, 200, 45)
             if rect.collidepoint(event.pos):
+                if audio_mgr:
+                    audio_mgr.play_sfx("click")
                 self._go_back()
 
     def _go_back(self) -> None:
         self.scene_manager.switch_scene("menu")
 
     def render(self, screen: pygame.Surface) -> None:
+        import math
         screen.fill((30, 34, 42))
         width = screen.get_width()
         
@@ -152,12 +158,13 @@ class AchievementsScene(Scene):
                 m_surf = font_meta.render("LOCKED", True, (150, 50, 50))
                 screen.blit(m_surf, (card_x + 90, card_y + 62))
 
-        # Back button
-        rect = pygame.Rect(width // 2 - 100, 620, 200, 45)
-        pygame.draw.rect(screen, (50, 60, 75), rect, border_radius=4)
-        pygame.draw.rect(screen, (255, 215, 0), rect, width=2, border_radius=4)
+        # Pulsing/sliding Back button
+        x_offset = int(6 * math.sin(pygame.time.get_ticks() * 0.008))
+        rect = pygame.Rect(width // 2 - 100 + x_offset, 620, 200, 45)
+        pygame.draw.rect(screen, (50, 60, 75), rect, border_radius=6)
+        pygame.draw.rect(screen, (255, 215, 0), rect, width=2, border_radius=6)
 
         font_btn = self.asset_manager.get_font("default", 20)
-        btn_surf = font_btn.render("BACK", True, (255, 255, 255))
+        btn_surf = font_btn.render("▶ BACK", True, (255, 215, 0))
         btn_rect = btn_surf.get_rect(center=rect.center)
         screen.blit(btn_surf, btn_rect)

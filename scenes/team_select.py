@@ -12,23 +12,34 @@ class TeamSelectScene(Scene):
         self.selected_index = 0
 
     def handle_event(self, event: pygame.event.Event) -> None:
+        audio_mgr = getattr(self.scene_manager, "audio_manager", None)
         if event.type == pygame.KEYDOWN:
             if event.key in (pygame.K_UP, pygame.K_w):
                 self.selected_index = (self.selected_index - 1) % len(self.teams)
+                if audio_mgr:
+                    audio_mgr.play_sfx("hover")
             elif event.key in (pygame.K_DOWN, pygame.K_s):
                 self.selected_index = (self.selected_index + 1) % len(self.teams)
+                if audio_mgr:
+                    audio_mgr.play_sfx("hover")
             elif event.key in (pygame.K_RETURN, pygame.K_SPACE):
+                if audio_mgr:
+                    audio_mgr.play_sfx("click")
                 self._confirm_team()
             elif event.key == pygame.K_ESCAPE:
+                if audio_mgr:
+                    audio_mgr.play_sfx("click")
                 self.scene_manager.switch_scene("mode_select")
 
         elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             m_pos = event.pos
             screen_w = 1280
             for idx in range(len(self.teams)):
-                rect = pygame.Rect(screen_w // 2 - 200, 220 + idx * 55, 400, 45)
+                rect = pygame.Rect(screen_w // 2 - 200, 210 + idx * 55, 400, 45)
                 if rect.collidepoint(m_pos):
                     self.selected_index = idx
+                    if audio_mgr:
+                        audio_mgr.play_sfx("click")
                     self._confirm_team()
 
     def _confirm_team(self) -> None:
@@ -36,6 +47,7 @@ class TeamSelectScene(Scene):
         self.scene_manager.switch_scene("difficulty_select", selected_team=chosen_team)
 
     def render(self, screen: pygame.Surface) -> None:
+        import math
         screen.fill((30, 34, 42))
         
         # Title
@@ -47,10 +59,19 @@ class TeamSelectScene(Scene):
         # Teams list
         font_opt = self.asset_manager.get_font("default", 32)
         for idx, team in enumerate(self.teams):
-            color = (255, 255, 255) if idx == self.selected_index else (130, 140, 150)
-            prefix = "> " if idx == self.selected_index else "  "
+            is_sel = (idx == self.selected_index)
+            color = (255, 215, 0) if is_sel else (140, 150, 165)
+            
+            x_offset = int(6 * math.sin(pygame.time.get_ticks() * 0.008)) if is_sel else 0
+            prefix = "▶ " if is_sel else "  "
+            
+            if is_sel:
+                box_rect = pygame.Rect(screen.get_width() // 2 - 220 + x_offset, 205 + idx * 55, 440, 45)
+                pygame.draw.rect(screen, (50, 60, 75), box_rect, border_radius=6)
+                pygame.draw.rect(screen, (255, 215, 0), box_rect, width=2, border_radius=6)
+                
             opt_surf = font_opt.render(prefix + team, True, color)
-            opt_rect = opt_surf.get_rect(center=(screen.get_width() // 2, 230 + idx * 55))
+            opt_rect = opt_surf.get_rect(center=(screen.get_width() // 2 + x_offset, 227 + idx * 55))
             screen.blit(opt_surf, opt_rect)
 
         # Hint

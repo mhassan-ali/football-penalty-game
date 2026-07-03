@@ -46,6 +46,12 @@ class GameplayScene(Scene):
         self._reset_attempt()
         self.mode = "aiming"
 
+        audio_mgr = getattr(self.scene_manager, "audio_manager", None)
+        if audio_mgr:
+            audio_mgr.stop_music()
+            audio_mgr.play_ambience()
+            audio_mgr.play_sfx("whistle")
+
     def _reset_attempt(self) -> None:
         self.ball.reset()
         self.keeper.reset()
@@ -124,6 +130,9 @@ class GameplayScene(Scene):
         self.last_keeper_dive_speed = self.keeper.dive_speed
         
         self.ball.shoot((target_x, target_y), speed)
+        audio_mgr = getattr(self.scene_manager, "audio_manager", None)
+        if audio_mgr:
+            audio_mgr.play_sfx("kick")
         self.is_replay_flight = False
         self.mode = "flight"
 
@@ -139,12 +148,20 @@ class GameplayScene(Scene):
         self.last_keeper_dive_speed = self.keeper.dive_speed
         
         self.ball.shoot(ai_target, ai_speed)
+        audio_mgr = getattr(self.scene_manager, "audio_manager", None)
+        if audio_mgr:
+            audio_mgr.play_sfx("kick")
         self.is_replay_flight = False
         self.mode = "flight"
 
     def _advance_after_result(self) -> None:
         if self.shootout.is_over:
             # Transition to Results Scene
+            audio_mgr = getattr(self.scene_manager, "audio_manager", None)
+            if audio_mgr:
+                audio_mgr.play_sfx("whistle")
+                audio_mgr.stop_ambience()
+                audio_mgr.play_music()
             self.state_manager.change_state(State.RESULT)
             self.scene_manager.switch_scene(
                 "results", 
@@ -185,13 +202,20 @@ class GameplayScene(Scene):
                     ball_x, ball_y = self.ball.pos.x, self.ball.pos.y
                     is_in_goal = self.goal.rect.collidepoint(ball_x, ball_y)
                     
+                    audio_mgr = getattr(self.scene_manager, "audio_manager", None)
                     if not is_in_goal:
                         self.outcome = "MISS"
+                        if audio_mgr:
+                            audio_mgr.play_sfx("hover")
                     else:
                         if self.keeper.rect.colliderect(self.ball.rect):
                             self.outcome = "SAVE"
+                            if audio_mgr:
+                                audio_mgr.play_sfx("save")
                         else:
                             self.outcome = "GOAL"
+                            if audio_mgr:
+                                audio_mgr.play_sfx("goal")
                     
                     if self.outcome == "GOAL":
                         self.is_replay_flight = True

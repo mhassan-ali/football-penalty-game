@@ -11,20 +11,26 @@ class StatisticsScene(Scene):
         self.origin_scene = kwargs.get("origin_scene", "menu")
 
     def handle_event(self, event: pygame.event.Event) -> None:
+        audio_mgr = getattr(self.scene_manager, "audio_manager", None)
         if event.type == pygame.KEYDOWN:
             if event.key in (pygame.K_RETURN, pygame.K_SPACE, pygame.K_ESCAPE):
+                if audio_mgr:
+                    audio_mgr.play_sfx("click")
                 self._go_back()
         elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             # Check back button
             width = 1280
             rect = pygame.Rect(width // 2 - 100, 620, 200, 45)
             if rect.collidepoint(event.pos):
+                if audio_mgr:
+                    audio_mgr.play_sfx("click")
                 self._go_back()
 
     def _go_back(self) -> None:
         self.scene_manager.switch_scene(self.origin_scene)
 
     def render(self, screen: pygame.Surface) -> None:
+        import math
         screen.fill((30, 34, 42))
         width = screen.get_width()
         
@@ -67,10 +73,7 @@ class StatisticsScene(Scene):
         font_val = self.asset_manager.get_font("default", 24)
 
         for idx, (label, val) in enumerate(stat_lines):
-            # Draw label left-aligned, val right-aligned inside a center card
             y = 150 + idx * 45
-            
-            # Draw row background line
             pygame.draw.line(screen, (50, 60, 75), (width // 2 - 250, y + 35), (width // 2 + 250, y + 35), 1)
 
             lbl_surf = font_label.render(label, True, (180, 190, 200))
@@ -80,12 +83,13 @@ class StatisticsScene(Scene):
             val_rect = val_surf.get_rect(right=width // 2 + 240, top=y + 5)
             screen.blit(val_surf, val_rect)
 
-        # Back option
-        rect = pygame.Rect(width // 2 - 100, 620, 200, 45)
-        pygame.draw.rect(screen, (50, 60, 75), rect, border_radius=4)
-        pygame.draw.rect(screen, (255, 215, 0), rect, width=2, border_radius=4)
+        # Back option (pulsing/sliding)
+        x_offset = int(6 * math.sin(pygame.time.get_ticks() * 0.008))
+        rect = pygame.Rect(width // 2 - 100 + x_offset, 620, 200, 45)
+        pygame.draw.rect(screen, (50, 60, 75), rect, border_radius=6)
+        pygame.draw.rect(screen, (255, 215, 0), rect, width=2, border_radius=6)
 
         font_btn = self.asset_manager.get_font("default", 20)
-        btn_surf = font_btn.render("BACK", True, (255, 255, 255))
+        btn_surf = font_btn.render("▶ BACK", True, (255, 215, 0))
         btn_rect = btn_surf.get_rect(center=rect.center)
         screen.blit(btn_surf, btn_rect)

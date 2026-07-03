@@ -79,6 +79,7 @@ def main() -> None:
     from managers.audio_manager import AudioManager
     audio_manager = AudioManager(save_manager)
     scene_manager.audio_manager = audio_manager
+    scene_manager.transitions_enabled = True
     audio_manager.play_music()
 
     # Restore in-progress tournament or career if saved

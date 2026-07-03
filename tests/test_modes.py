@@ -92,6 +92,7 @@ class TestGameModesSceneIntegration(unittest.TestCase):
         self.test_dir = "tests/temp_modes_test"
         self.save_manager = SaveManager(f"{self.test_dir}/savegame.json")
         self.scene_manager.save_manager = self.save_manager
+        self.scene_manager.transitions_enabled = False
 
         self.scenes = {
             "mode_select": ModeSelectScene("mode_select", self.state_manager, self.scene_manager, self.asset_manager),
