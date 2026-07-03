@@ -1,0 +1,67 @@
+{
+    "settings": {
+        "master_volume": 1.0,
+        "music_volume": 0.8,
+        "sfx_volume": 0.9
+    },
+    "statistics": {
+        "matches_played": 1,
+        "matches_won": 0,
+        "goals_scored": 2,
+        "saves_made": 1,
+        "tournaments_played": 0,
+        "tournaments_won": 0,
+        "careers_played": 1,
+        "careers_completed": 0
+    },
+    "achievements": {
+        "first_kick": {
+            "earned": true,
+            "earned_date": "2026-07-04 01:29:13"
+        },
+        "first_win": {
+            "earned": false,
+            "earned_date": ""
+        },
+        "goal_machine": {
+            "earned": false,
+            "progress": 2,
+            "target": 50,
+            "earned_date": ""
+        },
+        "brick_wall": {
+            "earned": false,
+            "progress": 1,
+            "target": 25,
+            "earned_date": ""
+        },
+        "tournament_champion": {
+            "earned": false,
+            "earned_date": ""
+        },
+        "career_legend": {
+            "earned": false,
+            "earned_date": ""
+        },
+        "perfect_shootout": {
+            "earned": false,
+            "earned_date": ""
+        },
+        "sharp_shooter": {
+            "earned": false,
+            "earned_date": ""
+        }
+    },
+    "tournament_progress": null,
+    "career_progress": {
+        "team": "FRANCE",
+        "max_matches": 10,
+        "current_match_idx": 2,
+        "wins": 0,
+        "losses": 1,
+        "points": 0,
+        "history": [
+            "loss"
+        ]
+    }
+}

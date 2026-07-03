@@ -52,6 +52,10 @@ class SceneManager:
             self._active_scene.on_enter(**kwargs)
             return
 
+        if self._transition_state is not None and self._transition_target == name:
+            logger.debug(f"Already transitioning to scene: {name}. Ignoring duplicate request.")
+            return
+
         # Start visual transition
         self._transition_target = name
         self._transition_kwargs = kwargs

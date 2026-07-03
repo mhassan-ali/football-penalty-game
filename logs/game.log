@@ -322,3 +322,148 @@
 [2026-07-04 01:06:33] [INFO] [root]: Quit window event detected.
 [2026-07-04 01:06:36] [INFO] [root]: Cleaning up resources and quitting Pygame.
 [2026-07-04 01:06:36] [INFO] [root]: Application terminated cleanly.
+[2026-07-04 01:12:41] [INFO] [root]: Logging initialized at level INFO. Log file: logs/game.log
+[2026-07-04 01:12:41] [INFO] [root]: Application starting up...
+[2026-07-04 01:12:41] [INFO] [root]: Pygame mixer initialized successfully.
+[2026-07-04 01:12:42] [INFO] [root]: Display window created: 1280x720 (Fullscreen: False)
+[2026-07-04 01:12:42] [INFO] [StateManager]: StateManager initialized in state: State.LOADING
+[2026-07-04 01:12:42] [INFO] [AssetManager]: AssetManager initialized (basic structure only, no real assets loaded).
+[2026-07-04 01:12:42] [INFO] [SaveManager]: Save file not found at save/savegame.json. Starting with fresh profile.
+[2026-07-04 01:12:42] [INFO] [AudioManager]: AudioManager successfully initialized and synthesized sounds.
+[2026-07-04 01:12:42] [INFO] [SceneManager]: Scene registered: splash
+[2026-07-04 01:12:42] [INFO] [SceneManager]: Scene registered: menu
+[2026-07-04 01:12:42] [INFO] [SceneManager]: Scene registered: mode_select
+[2026-07-04 01:12:42] [INFO] [SceneManager]: Scene registered: team_select
+[2026-07-04 01:12:42] [INFO] [SceneManager]: Scene registered: difficulty_select
+[2026-07-04 01:12:42] [INFO] [SceneManager]: Scene registered: loading
+[2026-07-04 01:12:42] [INFO] [SceneManager]: Scene registered: gameplay
+[2026-07-04 01:12:42] [INFO] [SceneManager]: Scene registered: pause
+[2026-07-04 01:12:42] [INFO] [SceneManager]: Scene registered: results
+[2026-07-04 01:12:42] [INFO] [SceneManager]: Scene registered: settings
+[2026-07-04 01:12:42] [INFO] [SceneManager]: Scene registered: credits
+[2026-07-04 01:12:42] [INFO] [SceneManager]: Scene registered: exit_confirm
+[2026-07-04 01:12:42] [INFO] [SceneManager]: Scene registered: tournament_bracket
+[2026-07-04 01:12:42] [INFO] [SceneManager]: Scene registered: career_hub
+[2026-07-04 01:12:42] [INFO] [SceneManager]: Scene registered: championship
+[2026-07-04 01:12:42] [INFO] [SceneManager]: Scene registered: statistics
+[2026-07-04 01:12:42] [INFO] [SceneManager]: Scene registered: achievements
+[2026-07-04 01:12:42] [INFO] [SceneManager]: Transitioning immediately to scene: splash
+[2026-07-04 01:12:42] [INFO] [GameLoop]: Starting GameLoop with target FPS: 60
+[2026-07-04 01:12:44] [INFO] [StateManager]: State transitioned successfully: State.LOADING -> State.MAIN_MENU
+[2026-07-04 01:12:44] [INFO] [SceneManager]: Transitioning to scene: menu
+[2026-07-04 01:12:47] [INFO] [SceneManager]: Transitioning to scene: mode_select
+[2026-07-04 01:12:53] [INFO] [SceneManager]: Transitioning to scene: team_select
+[2026-07-04 01:12:54] [INFO] [SceneManager]: Transitioning to scene: difficulty_select
+[2026-07-04 01:12:56] [INFO] [SceneManager]: Transitioning to scene: loading
+[2026-07-04 01:12:57] [INFO] [StateManager]: State transitioned successfully: State.MAIN_MENU -> State.GAMEPLAY
+[2026-07-04 01:12:58] [INFO] [SceneManager]: Transitioning to scene: gameplay
+[2026-07-04 01:13:26] [INFO] [root]: Quit window event detected.
+[2026-07-04 01:13:26] [INFO] [SceneManager]: Transitioning to scene: exit_confirm
+[2026-07-04 01:13:28] [INFO] [StateManager]: State transitioned successfully: State.GAMEPLAY -> State.EXIT
+[2026-07-04 01:13:28] [INFO] [root]: Exit state detected. Initiating clean shutdown...
+[2026-07-04 01:13:28] [INFO] [GameLoop]: Stopping GameLoop request received.
+[2026-07-04 01:13:28] [INFO] [GameLoop]: GameLoop stopped.
+[2026-07-04 01:13:28] [INFO] [root]: Cleaning up resources and quitting Pygame.
+[2026-07-04 01:13:28] [INFO] [root]: Application terminated cleanly.
+[2026-07-04 01:28:31] [INFO] [root]: Logging initialized at level INFO. Log file: logs/game.log
+[2026-07-04 01:28:31] [INFO] [root]: Application starting up...
+[2026-07-04 01:28:31] [INFO] [root]: Pygame mixer initialized successfully.
+[2026-07-04 01:28:31] [INFO] [root]: Display window created: 1280x720 (Fullscreen: False)
+[2026-07-04 01:28:31] [INFO] [StateManager]: StateManager initialized in state: State.LOADING
+[2026-07-04 01:28:31] [INFO] [AssetManager]: AssetManager initialized (basic structure only, no real assets loaded).
+[2026-07-04 01:28:31] [INFO] [SaveManager]: Save file not found at save/savegame.json. Starting with fresh profile.
+[2026-07-04 01:28:31] [INFO] [AudioManager]: AudioManager successfully initialized and synthesized sounds.
+[2026-07-04 01:28:31] [INFO] [SceneManager]: Scene registered: splash
+[2026-07-04 01:28:31] [INFO] [SceneManager]: Scene registered: menu
+[2026-07-04 01:28:31] [INFO] [SceneManager]: Scene registered: mode_select
+[2026-07-04 01:28:31] [INFO] [SceneManager]: Scene registered: team_select
+[2026-07-04 01:28:31] [INFO] [SceneManager]: Scene registered: difficulty_select
+[2026-07-04 01:28:31] [INFO] [SceneManager]: Scene registered: loading
+[2026-07-04 01:28:31] [INFO] [SceneManager]: Scene registered: gameplay
+[2026-07-04 01:28:31] [INFO] [SceneManager]: Scene registered: pause
+[2026-07-04 01:28:31] [INFO] [SceneManager]: Scene registered: results
+[2026-07-04 01:28:31] [INFO] [SceneManager]: Scene registered: settings
+[2026-07-04 01:28:31] [INFO] [SceneManager]: Scene registered: credits
+[2026-07-04 01:28:31] [INFO] [SceneManager]: Scene registered: exit_confirm
+[2026-07-04 01:28:31] [INFO] [SceneManager]: Scene registered: tournament_bracket
+[2026-07-04 01:28:31] [INFO] [SceneManager]: Scene registered: career_hub
+[2026-07-04 01:28:31] [INFO] [SceneManager]: Scene registered: championship
+[2026-07-04 01:28:31] [INFO] [SceneManager]: Scene registered: statistics
+[2026-07-04 01:28:31] [INFO] [SceneManager]: Scene registered: achievements
+[2026-07-04 01:28:31] [INFO] [SceneManager]: Transitioning immediately to scene: splash
+[2026-07-04 01:28:31] [INFO] [GameLoop]: Starting GameLoop with target FPS: 60
+[2026-07-04 01:28:33] [INFO] [StateManager]: State transitioned successfully: State.LOADING -> State.MAIN_MENU
+[2026-07-04 01:28:34] [INFO] [SceneManager]: Transitioning to scene: menu
+[2026-07-04 01:28:35] [INFO] [SceneManager]: Transitioning to scene: mode_select
+[2026-07-04 01:28:38] [INFO] [SceneManager]: Transitioning to scene: team_select
+[2026-07-04 01:28:40] [INFO] [SceneManager]: Transitioning to scene: difficulty_select
+[2026-07-04 01:28:42] [INFO] [SaveManager]: Game saved successfully.
+[2026-07-04 01:28:42] [INFO] [SaveManager]: Game saved successfully.
+[2026-07-04 01:28:43] [INFO] [SceneManager]: Transitioning to scene: career_hub
+[2026-07-04 01:28:45] [INFO] [SceneManager]: Transitioning to scene: loading
+[2026-07-04 01:28:46] [INFO] [StateManager]: State transitioned successfully: State.MAIN_MENU -> State.GAMEPLAY
+[2026-07-04 01:28:46] [INFO] [SceneManager]: Transitioning to scene: gameplay
+[2026-07-04 01:29:13] [INFO] [StateManager]: State transitioned successfully: State.GAMEPLAY -> State.RESULT
+[2026-07-04 01:29:13] [INFO] [SceneManager]: Transitioning to scene: results
+[2026-07-04 01:29:13] [INFO] [SaveManager]: Game saved successfully.
+[2026-07-04 01:29:13] [INFO] [SaveManager]: Game saved successfully.
+[2026-07-04 01:29:13] [INFO] [SaveManager]: Game saved successfully.
+[2026-07-04 01:29:13] [INFO] [SaveManager]: Game saved successfully.
+[2026-07-04 01:29:13] [INFO] [SaveManager]: ACHIEVEMENT UNLOCKED: first_kick
+[2026-07-04 01:29:13] [INFO] [SaveManager]: Game saved successfully.
+[2026-07-04 01:29:13] [INFO] [SaveManager]: Game saved successfully.
+[2026-07-04 01:29:13] [INFO] [SaveManager]: Game saved successfully.
+[2026-07-04 01:29:13] [ERROR] [GameLoop]: Uncaught exception inside game loop cycle: name 'math' is not defined
+Traceback (most recent call last):
+  File "D:\Python Projects\Penalty-Shootout-game\core\loop.py", line 51, in start
+    render()
+  File "D:\Python Projects\Penalty-Shootout-game\main.py", line 149, in render
+    scene_manager.render(screen)
+  File "D:\Python Projects\Penalty-Shootout-game\core\scene_manager.py", line 103, in render
+    self._active_scene.render(screen)
+  File "D:\Python Projects\Penalty-Shootout-game\scenes\results.py", line 220, in render
+    x_offset = int(6 * math.sin(pygame.time.get_ticks() * 0.008)) if is_sel else 0
+                       ^^^^
+NameError: name 'math' is not defined. Did you forget to import 'math'
+[2026-07-04 01:29:13] [INFO] [GameLoop]: Stopping GameLoop request received.
+[2026-07-04 01:29:13] [INFO] [GameLoop]: GameLoop stopped.
+[2026-07-04 01:29:13] [INFO] [root]: Cleaning up resources and quitting Pygame.
+[2026-07-04 01:29:13] [INFO] [root]: Application terminated cleanly.
+[2026-07-04 01:29:22] [INFO] [root]: Logging initialized at level INFO. Log file: logs/game.log
+[2026-07-04 01:29:22] [INFO] [root]: Application starting up...
+[2026-07-04 01:29:22] [INFO] [root]: Pygame mixer initialized successfully.
+[2026-07-04 01:29:22] [INFO] [root]: Display window created: 1280x720 (Fullscreen: False)
+[2026-07-04 01:29:22] [INFO] [StateManager]: StateManager initialized in state: State.LOADING
+[2026-07-04 01:29:22] [INFO] [AssetManager]: AssetManager initialized (basic structure only, no real assets loaded).
+[2026-07-04 01:29:22] [INFO] [AudioManager]: AudioManager successfully initialized and synthesized sounds.
+[2026-07-04 01:29:22] [INFO] [SceneManager]: Scene registered: splash
+[2026-07-04 01:29:22] [INFO] [SceneManager]: Scene registered: menu
+[2026-07-04 01:29:22] [INFO] [SceneManager]: Scene registered: mode_select
+[2026-07-04 01:29:22] [INFO] [SceneManager]: Scene registered: team_select
+[2026-07-04 01:29:22] [INFO] [SceneManager]: Scene registered: difficulty_select
+[2026-07-04 01:29:22] [INFO] [SceneManager]: Scene registered: loading
+[2026-07-04 01:29:22] [INFO] [SceneManager]: Scene registered: gameplay
+[2026-07-04 01:29:22] [INFO] [SceneManager]: Scene registered: pause
+[2026-07-04 01:29:22] [INFO] [SceneManager]: Scene registered: results
+[2026-07-04 01:29:22] [INFO] [SceneManager]: Scene registered: settings
+[2026-07-04 01:29:22] [INFO] [SceneManager]: Scene registered: credits
+[2026-07-04 01:29:22] [INFO] [SceneManager]: Scene registered: exit_confirm
+[2026-07-04 01:29:22] [INFO] [SceneManager]: Scene registered: tournament_bracket
+[2026-07-04 01:29:22] [INFO] [SceneManager]: Scene registered: career_hub
+[2026-07-04 01:29:22] [INFO] [SceneManager]: Scene registered: championship
+[2026-07-04 01:29:22] [INFO] [SceneManager]: Scene registered: statistics
+[2026-07-04 01:29:22] [INFO] [SceneManager]: Scene registered: achievements
+[2026-07-04 01:29:22] [INFO] [SceneManager]: Transitioning immediately to scene: splash
+[2026-07-04 01:29:22] [INFO] [GameLoop]: Starting GameLoop with target FPS: 60
+[2026-07-04 01:29:24] [INFO] [StateManager]: State transitioned successfully: State.LOADING -> State.MAIN_MENU
+[2026-07-04 01:29:25] [INFO] [SceneManager]: Transitioning to scene: menu
+[2026-07-04 01:29:26] [INFO] [SceneManager]: Transitioning to scene: mode_select
+[2026-07-04 01:29:29] [INFO] [SceneManager]: Transitioning to scene: team_select
+[2026-07-04 01:29:36] [INFO] [root]: Quit window event detected.
+[2026-07-04 01:29:36] [INFO] [SceneManager]: Transitioning to scene: exit_confirm
+[2026-07-04 01:29:37] [INFO] [StateManager]: State transitioned successfully: State.MAIN_MENU -> State.EXIT
+[2026-07-04 01:29:37] [INFO] [root]: Exit state detected. Initiating clean shutdown...
+[2026-07-04 01:29:37] [INFO] [GameLoop]: Stopping GameLoop request received.
+[2026-07-04 01:29:37] [INFO] [GameLoop]: GameLoop stopped.
+[2026-07-04 01:29:37] [INFO] [root]: Cleaning up resources and quitting Pygame.
+[2026-07-04 01:29:37] [INFO] [root]: Application terminated cleanly.

@@ -13,6 +13,10 @@ class MenuScene(Scene):
         self.selected_index = 0
         if self.state_manager.current_state != State.MAIN_MENU:
             self.state_manager.change_state(State.MAIN_MENU)
+            
+        audio_mgr = getattr(self.scene_manager, "audio_manager", None)
+        if audio_mgr:
+            audio_mgr.play_music()
 
     def handle_event(self, event: pygame.event.Event) -> None:
         audio_mgr = getattr(self.scene_manager, "audio_manager", None)

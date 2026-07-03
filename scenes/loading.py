@@ -14,13 +14,19 @@ class LoadingScene(Scene):
         self.timer = 1.0
         self.selected_team = kwargs.get("selected_team", "BRAZIL")
         self.difficulty = kwargs.get("difficulty", "medium")
+        self.opponent = kwargs.get("opponent", "OPPONENT")
 
     def update(self, dt: float) -> None:
         self.timer -= dt
         if self.timer <= 0:
             # Transition state to GAMEPLAY and switch scene to gameplay
             self.state_manager.change_state(State.GAMEPLAY)
-            self.scene_manager.switch_scene("gameplay", selected_team=self.selected_team, difficulty=self.difficulty)
+            self.scene_manager.switch_scene(
+                "gameplay", 
+                selected_team=self.selected_team, 
+                difficulty=self.difficulty,
+                opponent=self.opponent
+            )
 
     def render(self, screen: pygame.Surface) -> None:
         screen.fill((20, 24, 30))
