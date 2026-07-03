@@ -70,14 +70,16 @@ class ResultsScene(Scene):
                 t = mode_mgr.tournament
                 if t.eliminated:
                     t.eliminated = False
+                    stage = t.stages[t.current_stage_idx]
+                    t.results[stage] = []
                 else:
                     if t.winner == t.player_team:
                         t.winner = None
                         t.current_stage_idx = 2
                     else:
                         t.current_stage_idx = max(0, t.current_stage_idx - 1)
-                    if t.current_stage_idx in t.results and len(t.results[t.stages[t.current_stage_idx]]) > 0:
-                        t.results[t.stages[t.current_stage_idx]].pop()
+                    stage = t.stages[t.current_stage_idx]
+                    t.results[stage] = []
             elif mode_mgr.active_mode == "career" and mode_mgr.career:
                 # Rollback career index
                 c = mode_mgr.career

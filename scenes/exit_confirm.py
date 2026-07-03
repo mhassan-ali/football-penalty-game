@@ -9,10 +9,12 @@ class ExitConfirmScene(Scene):
         self.options = ["YES", "NO"]
         self.selected_index = 1  # Default to NO for safety
         self.target_action = "quit"  # "quit" or "menu"
+        self.origin_scene = "pause"
 
     def on_enter(self, **kwargs: Any) -> None:
         self.selected_index = 1
         self.target_action = kwargs.get("target_action", "quit")
+        self.origin_scene = kwargs.get("origin_scene", "pause")
 
     def handle_event(self, event: pygame.event.Event) -> None:
         if event.type == pygame.KEYDOWN:
@@ -51,7 +53,7 @@ class ExitConfirmScene(Scene):
         if self.target_action == "quit":
             self.scene_manager.switch_scene("menu")
         elif self.target_action == "menu":
-            self.scene_manager.switch_scene("pause")
+            self.scene_manager.switch_scene(self.origin_scene)
 
     def render(self, screen: pygame.Surface) -> None:
         # Dark overlay

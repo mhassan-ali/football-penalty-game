@@ -23,7 +23,7 @@ class TournamentBracketScene(Scene):
             elif event.key in (pygame.K_RETURN, pygame.K_SPACE):
                 self._select_option()
             elif event.key == pygame.K_ESCAPE:
-                self.scene_manager.switch_scene("exit_confirm", target_action="menu")
+                self.scene_manager.switch_scene("exit_confirm", target_action="menu", origin_scene=self.name)
 
         elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             m_pos = event.pos
@@ -52,7 +52,7 @@ class TournamentBracketScene(Scene):
                 )
         elif self.selected_index == 1:
             # Abandon tournament (requires confirm dialog per App Flow)
-            self.scene_manager.switch_scene("exit_confirm", target_action="menu")
+            self.scene_manager.switch_scene("exit_confirm", target_action="menu", origin_scene=self.name)
 
     def render(self, screen: pygame.Surface) -> None:
         screen.fill((30, 34, 42))

@@ -50,7 +50,7 @@ class PauseScene(Scene):
             self.scene_manager.switch_scene("settings", origin_scene="pause")
         elif self.selected_index == 3:
             # Return to main menu (triggers confirm dialog per APP_FLOW)
-            self.scene_manager.switch_scene("exit_confirm", target_action="menu")
+            self.scene_manager.switch_scene("exit_confirm", target_action="menu", origin_scene=self.name)
 
     def render(self, screen: pygame.Surface) -> None:
         # Semi-transparent dark overlay over whatever was rendered before or solid dark background

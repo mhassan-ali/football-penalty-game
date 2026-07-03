@@ -17,6 +17,9 @@ from scenes.results import ResultsScene
 from scenes.settings import SettingsScene
 from scenes.credits import CreditsScene
 from scenes.exit_confirm import ExitConfirmScene
+from scenes.tournament_bracket import TournamentBracketScene
+from scenes.career_hub import CareerHubScene
+from scenes.championship import ChampionshipScene
 
 class TestNavigationFlow(unittest.TestCase):
     def setUp(self) -> None:
@@ -41,7 +44,10 @@ class TestNavigationFlow(unittest.TestCase):
             "results": ResultsScene("results", self.state_manager, self.scene_manager, self.asset_manager),
             "settings": SettingsScene("settings", self.state_manager, self.scene_manager, self.asset_manager),
             "credits": CreditsScene("credits", self.state_manager, self.scene_manager, self.asset_manager),
-            "exit_confirm": ExitConfirmScene("exit_confirm", self.state_manager, self.scene_manager, self.asset_manager)
+            "exit_confirm": ExitConfirmScene("exit_confirm", self.state_manager, self.scene_manager, self.asset_manager),
+            "tournament_bracket": TournamentBracketScene("tournament_bracket", self.state_manager, self.scene_manager, self.asset_manager),
+            "career_hub": CareerHubScene("career_hub", self.state_manager, self.scene_manager, self.asset_manager),
+            "championship": ChampionshipScene("championship", self.state_manager, self.scene_manager, self.asset_manager)
         }
         for name, sc in self.scenes.items():
             self.scene_manager.register_scene(name, sc)
@@ -104,3 +110,27 @@ class TestNavigationFlow(unittest.TestCase):
         self.scenes["results"]._go_to_menu()
         self.assertEqual(self.state_manager.current_state, State.MAIN_MENU)
         self.assertEqual(self.scene_manager.active_scene.name, "menu")
+
+    def test_exit_confirm_cancel_routing(self):
+        # 1. From Tournament Bracket -> Exit Confirm -> Cancel (returns to Tournament Bracket)
+        self.scene_manager.switch_scene("tournament_bracket")
+        self.scenes["tournament_bracket"].selected_index = 1 # Abandon
+        self.scenes["tournament_bracket"]._select_option()
+        self.assertEqual(self.scene_manager.active_scene.name, "exit_confirm")
+        
+        # Select NO (cancel)
+        self.scenes["exit_confirm"].selected_index = 1
+        self.scenes["exit_confirm"]._confirm()
+        self.assertEqual(self.scene_manager.active_scene.name, "tournament_bracket")
+
+        # 2. From Pause -> Exit Confirm -> Cancel (returns to Pause)
+        self.state_manager.change_state(State.GAMEPLAY)
+        self.scene_manager.switch_scene("pause")
+        self.scenes["pause"].selected_index = 3 # Return to main menu
+        self.scenes["pause"]._select_option()
+        self.assertEqual(self.scene_manager.active_scene.name, "exit_confirm")
+        
+        # Select NO (cancel)
+        self.scenes["exit_confirm"].selected_index = 1
+        self.scenes["exit_confirm"]._confirm()
+        self.assertEqual(self.scene_manager.active_scene.name, "pause")

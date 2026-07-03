@@ -124,6 +124,8 @@ class TestGameModesSceneIntegration(unittest.TestCase):
     def test_results_routing_tournament_win(self):
         self.mode_manager.start_tournament("BRAZIL")
         
+        # Transition state to gameplay to allow result transition
+        self.state_manager.change_state(State.GAMEPLAY)
         # Win Quarter Final
         self.scene_manager.switch_scene("results", winner="player", selected_team="BRAZIL", difficulty="medium")
         self.assertEqual(self.mode_manager.tournament.current_stage_idx, 1) # Advanced to Semi Final
@@ -137,6 +139,8 @@ class TestGameModesSceneIntegration(unittest.TestCase):
         self.mode_manager.start_career("BRAZIL")
         self.assertEqual(self.mode_manager.career.current_match_idx, 1)
 
+        # Transition state to gameplay to allow result transition
+        self.state_manager.change_state(State.GAMEPLAY)
         # Play match 1 and win
         self.scene_manager.switch_scene("results", winner="player", selected_team="BRAZIL", difficulty="medium")
         self.assertEqual(self.mode_manager.career.current_match_idx, 2)
@@ -152,3 +156,26 @@ class TestGameModesSceneIntegration(unittest.TestCase):
         self.assertEqual(self.mode_manager.career.current_match_idx, 1)
         self.assertEqual(self.mode_manager.career.wins, 0)
         self.assertEqual(self.scene_manager.active_scene.name, "loading")
+
+    def test_results_retry_rollback_tournament(self):
+        self.mode_manager.start_tournament("BRAZIL")
+        self.assertEqual(self.mode_manager.tournament.current_stage_idx, 0)
+
+        # Transition state to gameplay to allow result transition
+        self.state_manager.change_state(State.GAMEPLAY)
+        # Play QF and win
+        self.scene_manager.switch_scene("results", winner="player", selected_team="BRAZIL", difficulty="medium")
+        self.assertEqual(self.mode_manager.tournament.current_stage_idx, 1)
+        self.assertTrue(len(self.mode_manager.tournament.results["Quarter Final"]) > 0)
+
+        # Press RETRY (option 0) -> rolls back tournament result and goes to loading
+        self.scenes["results"].selected_index = 0
+        # Register loading stub to verify transition
+        self.scene_manager.register_scene("loading", LoadingScene("loading", self.state_manager, self.scene_manager, self.asset_manager))
+        self.scenes["results"]._select_option()
+
+        # Assert rolled back
+        self.assertEqual(self.mode_manager.tournament.current_stage_idx, 0)
+        self.assertEqual(len(self.mode_manager.tournament.results["Quarter Final"]), 0)
+        self.assertEqual(self.scene_manager.active_scene.name, "loading")
+
