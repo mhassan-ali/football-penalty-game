@@ -6,6 +6,7 @@ from scenes.base import Scene
 from core.state_manager import State
 from game.entities import Goal, Ball, Goalkeeper, decide_ai_shot
 from game.shootout import Shootout
+from game.particles import ParticleSystem
 
 class GameplayScene(Scene):
     def __init__(self, name: str, state_manager: Any, scene_manager: Any, asset_manager: Any) -> None:
@@ -32,6 +33,7 @@ class GameplayScene(Scene):
         
         self.result_timer = 0.0
         self.aim_target: Tuple[float, float] = (640.0, 350.0)
+        self.particles = ParticleSystem()
 
     def on_enter(self, **kwargs: Any) -> None:
         # Check if resuming from pause
@@ -63,6 +65,7 @@ class GameplayScene(Scene):
         self.power_charging = False
         self.is_replay_flight = False
         self.outcome = ""
+        self.particles.clear()
 
     def handle_event(self, event: pygame.event.Event) -> None:
         if event.type == pygame.KEYDOWN:
@@ -134,6 +137,7 @@ class GameplayScene(Scene):
         self.last_keeper_dive_speed = self.keeper.dive_speed
         
         self.ball.shoot((target_x, target_y), speed)
+        self.particles.spawn_dust(self.ball.pos.x, self.ball.pos.y)
         audio_mgr = getattr(self.scene_manager, "audio_manager", None)
         if audio_mgr:
             audio_mgr.play_sfx("kick")
@@ -152,6 +156,7 @@ class GameplayScene(Scene):
         self.last_keeper_dive_speed = self.keeper.dive_speed
         
         self.ball.shoot(ai_target, ai_speed)
+        self.particles.spawn_dust(self.ball.pos.x, self.ball.pos.y)
         audio_mgr = getattr(self.scene_manager, "audio_manager", None)
         if audio_mgr:
             audio_mgr.play_sfx("kick")
@@ -198,6 +203,7 @@ class GameplayScene(Scene):
             sim_dt = dt * 0.35 if self.is_replay_flight else dt
             self.ball.update(sim_dt)
             self.keeper.update(sim_dt)
+            self.particles.spawn_trail(self.ball.pos.x, self.ball.pos.y)
             
             if not self.ball.is_moving:
                 if self.is_replay_flight:
@@ -212,16 +218,19 @@ class GameplayScene(Scene):
                     audio_mgr = getattr(self.scene_manager, "audio_manager", None)
                     if not is_in_goal:
                         self.outcome = "MISS"
+                        self.particles.spawn_sparks(self.ball.pos.x, self.ball.pos.y, count=15)
                         if audio_mgr:
                             audio_mgr.play_sfx("hover")
                     else:
                         if self.keeper.rect.colliderect(self.ball.rect):
                             self.outcome = "SAVE"
+                            self.particles.spawn_sparks(self.ball.pos.x, self.ball.pos.y, count=30)
                             if audio_mgr:
                                 audio_mgr.play_sfx("save")
                         else:
                             self.outcome = "GOAL"
                             self.camera_shake = 12.0
+                            self.particles.spawn_confetti(self.ball.pos.x, self.ball.pos.y - 30, count=60)
                             if audio_mgr:
                                 audio_mgr.play_sfx("goal")
                     
@@ -241,6 +250,8 @@ class GameplayScene(Scene):
             self.result_timer -= dt
             if self.result_timer <= 0:
                 self._advance_after_result()
+
+        self.particles.update(dt)
 
     def _draw_flag_procedural(self, screen: pygame.Surface, x: int, y: int, w: int, h: int, country: str) -> None:
         country = country.upper()
@@ -583,8 +594,9 @@ class GameplayScene(Scene):
         pygame.draw.ellipse(shadow_surf, (0, 0, 0, sh_alpha), (0, 0, sh_radius * 2, sh_radius))
         canvas.blit(shadow_surf, (ball_x - sh_radius, int(ground_y) - sh_radius // 2))
 
-        # 7. Render Soccer Ball
+        # 7. Render Soccer Ball & Particles
         self._draw_football_procedural(canvas, ball_x, ball_y, self.ball.radius)
+        self.particles.draw(canvas)
 
         # 8. Render Aiming Crosshair / Power Gauge
         if self.mode == "aiming" or self.mode == "powering":
