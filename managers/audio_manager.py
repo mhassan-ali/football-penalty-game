@@ -46,6 +46,9 @@ class AudioManager:
             self.sounds["save"] = self._create_save_clap()
             self.sounds["click"] = self._create_click()
             self.sounds["hover"] = self._create_hover()
+            self.sounds["post_hit"] = self._create_post_hit()
+            self.sounds["fanfare"] = self._create_fanfare()
+            self.sounds["gasp"] = self._create_gasp()
         except Exception as e:
             logger.error(f"Error generating synthesized sounds: {e}")
 
@@ -245,5 +248,44 @@ class AudioManager:
         for i in range(num_samples):
             t = float(i) / sample_rate
             val = int(32767 * 0.18 * math.exp(-80.0 * t) * math.sin(2.0 * math.pi * 600.0 * t))
+            buffer.extend(struct.pack("<h", val))
+        return pygame.mixer.Sound(buffer=bytes(buffer))
+
+    def _create_post_hit(self, duration: float = 0.35, sample_rate: int = 22050) -> pygame.mixer.Sound:
+        num_samples = int(duration * sample_rate)
+        buffer = bytearray()
+        for i in range(num_samples):
+            t = float(i) / sample_rate
+            # High metallic ring clack
+            ring1 = math.sin(2.0 * math.pi * 1250.0 * t)
+            ring2 = math.sin(2.0 * math.pi * 1850.0 * t)
+            env = math.exp(-18.0 * t)
+            val = int(32767 * 0.65 * env * (ring1 * 0.6 + ring2 * 0.4))
+            buffer.extend(struct.pack("<h", val))
+        return pygame.mixer.Sound(buffer=bytes(buffer))
+
+    def _create_fanfare(self, duration: float = 1.8, sample_rate: int = 22050) -> pygame.mixer.Sound:
+        num_samples = int(duration * sample_rate)
+        buffer = bytearray()
+        notes = [261.63, 329.63, 392.00, 523.25]  # C4, E4, G4, C5
+        for i in range(num_samples):
+            t = float(i) / sample_rate
+            note_idx = min(3, int(t / 0.25))
+            freq = notes[note_idx]
+            env = math.exp(-3.0 * (t % 0.25))
+            wave = math.sin(2.0 * math.pi * freq * t)
+            val = int(32767 * 0.55 * env * wave)
+            buffer.extend(struct.pack("<h", val))
+        return pygame.mixer.Sound(buffer=bytes(buffer))
+
+    def _create_gasp(self, duration: float = 0.8, sample_rate: int = 22050) -> pygame.mixer.Sound:
+        num_samples = int(duration * sample_rate)
+        buffer = bytearray()
+        import random
+        for i in range(num_samples):
+            t = float(i) / sample_rate
+            noise = random.uniform(-1.0, 1.0)
+            env = math.sin(math.pi * (t / duration)) ** 2
+            val = int(32767 * 0.30 * noise * env)
             buffer.extend(struct.pack("<h", val))
         return pygame.mixer.Sound(buffer=bytes(buffer))

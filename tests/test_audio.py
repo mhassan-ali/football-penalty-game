@@ -35,6 +35,9 @@ class TestAudioAndTransitions(unittest.TestCase):
         self.assertIn("music", am.sounds)
         self.assertIn("kick", am.sounds)
         self.assertIn("whistle", am.sounds)
+        self.assertIn("post_hit", am.sounds)
+        self.assertIn("fanfare", am.sounds)
+        self.assertIn("gasp", am.sounds)
         
         # Test updating volumes with mock save manager
         class MockSaveManager:
