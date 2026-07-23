@@ -359,7 +359,7 @@ class GameplayScene(Scene):
             pygame.draw.circle(screen, glove_col, (x + 42, y - 98), 8)
 
         else:
-            # Idle ready breathing animation
+            # Idle ready breathing or celebration/disappointment animation
             b_y = math.sin(ticks * 0.007) * 2.2
             
             # Legs
@@ -376,14 +376,27 @@ class GameplayScene(Scene):
             pygame.draw.circle(screen, skin_col, (x, y - 101 + b_y), 10)
             pygame.draw.rect(screen, hair_col, (x - 8, y - 111 + b_y, 16, 6), border_radius=2)
             
-            # Arms bent down ready
-            pygame.draw.line(screen, jersey_col, (x - 15, y - 82 + b_y), (x - 25, y - 64 + b_y), 6)
-            pygame.draw.line(screen, skin_col, (x - 25, y - 64 + b_y), (x - 23, y - 46 + b_y), 5)
-            pygame.draw.circle(screen, glove_col, (x - 23, y - 44 + b_y), 8)
-            
-            pygame.draw.line(screen, jersey_col, (x + 15, y - 82 + b_y), (x + 26, y - 64 + b_y), 6)
-            pygame.draw.line(screen, skin_col, (x + 26, y - 64 + b_y), (x + 24, y - 46 + b_y), 5)
-            pygame.draw.circle(screen, glove_col, (x + 24, y - 44 + b_y), 8)
+            if self.mode == "result" and self.outcome in ("SAVE", "MISS"):
+                # Celebration: Victory fist pump / arms raised high
+                pygame.draw.line(screen, jersey_col, (x - 15, y - 82), (x - 28, y - 115), 6)
+                pygame.draw.circle(screen, glove_col, (x - 28, y - 118), 8)
+                pygame.draw.line(screen, jersey_col, (x + 15, y - 82), (x + 28, y - 115), 6)
+                pygame.draw.circle(screen, glove_col, (x + 28, y - 118), 8)
+            elif self.mode == "result" and self.outcome == "GOAL":
+                # Disappointment: Hands on knees / head down
+                pygame.draw.line(screen, jersey_col, (x - 15, y - 82), (x - 12, y - 50), 6)
+                pygame.draw.circle(screen, glove_col, (x - 12, y - 48), 8)
+                pygame.draw.line(screen, jersey_col, (x + 15, y - 82), (x + 12, y - 50), 6)
+                pygame.draw.circle(screen, glove_col, (x + 12, y - 48), 8)
+            else:
+                # Arms bent down ready
+                pygame.draw.line(screen, jersey_col, (x - 15, y - 82 + b_y), (x - 25, y - 64 + b_y), 6)
+                pygame.draw.line(screen, skin_col, (x - 25, y - 64 + b_y), (x - 23, y - 46 + b_y), 5)
+                pygame.draw.circle(screen, glove_col, (x - 23, y - 44 + b_y), 8)
+                
+                pygame.draw.line(screen, jersey_col, (x + 15, y - 82 + b_y), (x + 26, y - 64 + b_y), 6)
+                pygame.draw.line(screen, skin_col, (x + 26, y - 64 + b_y), (x + 24, y - 46 + b_y), 5)
+                pygame.draw.circle(screen, glove_col, (x + 24, y - 44 + b_y), 8)
 
     def _draw_football_procedural(self, screen: pygame.Surface, x: int, y: int, radius: int) -> None:
         # Base soccer ball surface
