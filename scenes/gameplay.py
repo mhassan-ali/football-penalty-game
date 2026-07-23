@@ -598,27 +598,56 @@ class GameplayScene(Scene):
         self._draw_football_procedural(canvas, ball_x, ball_y, self.ball.radius)
         self.particles.draw(canvas)
 
-        # 8. Render Aiming Crosshair / Power Gauge
-        if self.mode == "aiming" or self.mode == "powering":
+        # 8. Render Animated Aiming Crosshair / Power Gauge
+        if self.mode in ("aiming", "powering"):
             m_pos = pygame.mouse.get_pos()
             
             # Pulse glow target
-            g_r = int(18 + 4 * math.sin(ticks * 0.012))
-            pygame.draw.circle(canvas, (255, 50, 50), m_pos, g_r, 2)
-            pygame.draw.circle(canvas, (255, 50, 50), m_pos, 3)
-            # Dashed target line
-            pygame.draw.line(canvas, (255, 50, 50), (640, 600), m_pos, 1)
+            g_r = int(20 + 5 * math.sin(ticks * 0.015))
+            rot_angle = (ticks * 0.08) % (2 * math.pi)
+            
+            # Outer animated reticle rings
+            pygame.draw.circle(canvas, (255, 60, 60), m_pos, g_r, 2)
+            pygame.draw.circle(canvas, (255, 220, 50), m_pos, max(4, g_r - 8), 1)
+            pygame.draw.circle(canvas, (255, 255, 255), m_pos, 3)
+            
+            # Reticle crosshair tick marks
+            for angle in [rot_angle, rot_angle + math.pi / 2, rot_angle + math.pi, rot_angle + 3 * math.pi / 2]:
+                x1 = m_pos[0] + math.cos(angle) * (g_r + 2)
+                y1 = m_pos[1] + math.sin(angle) * (g_r + 2)
+                x2 = m_pos[0] + math.cos(angle) * (g_r + 8)
+                y2 = m_pos[1] + math.sin(angle) * (g_r + 8)
+                pygame.draw.line(canvas, (255, 255, 255), (int(x1), int(y1)), (int(x2), int(y2)), 2)
+
+            # Trajectory guide line from penalty spot to target
+            pygame.draw.line(canvas, (255, 70, 70), (640, 600), m_pos, 1)
 
             if self.power_charging:
-                bar_x, bar_y, bar_w, bar_h = 590, 630, 100, 14
-                pygame.draw.rect(canvas, (40, 40, 45), (bar_x, bar_y, bar_w, bar_h), border_radius=3)
-                fill_w = int(self.shot_power)
-                r_col = int(self.shot_power * 2.55)
-                g_col = int((100 - self.shot_power) * 2.55)
-                # Draw neon bar
-                pygame.draw.rect(canvas, (r_col, g_col, 0), (bar_x + 1, bar_y + 1, max(1, fill_w - 2), bar_h - 2), border_radius=2)
-                # Outer white focus ring
-                pygame.draw.rect(canvas, (255, 255, 255), (bar_x, bar_y, bar_w, bar_h), 1, border_radius=3)
+                bar_x, bar_y, bar_w, bar_h = 560, 630, 160, 16
+                pygame.draw.rect(canvas, (25, 28, 36), (bar_x, bar_y, bar_w, bar_h), border_radius=4)
+                fill_w = int((self.shot_power / 100.0) * (bar_w - 2))
+                
+                # Dynamic neon gradient: Cyan -> Yellow -> Red
+                if self.shot_power < 50:
+                    r_c = int((self.shot_power / 50.0) * 255)
+                    g_c = 255
+                    b_c = int((1.0 - self.shot_power / 50.0) * 255)
+                else:
+                    r_c = 255
+                    g_c = int((1.0 - (self.shot_power - 50.0) / 50.0) * 255)
+                    b_c = 0
+                
+                bar_col = (r_c, g_c, b_c)
+                pygame.draw.rect(canvas, bar_col, (bar_x + 1, bar_y + 1, max(1, fill_w), bar_h - 2), border_radius=3)
+                
+                # Overpower warning pulse indicator
+                if self.shot_power > 90.0:
+                    warning_alpha = int(180 + 75 * math.sin(ticks * 0.03))
+                    warn_surf = pygame.Surface((bar_w, bar_h), pygame.SRCALPHA)
+                    pygame.draw.rect(warn_surf, (255, 0, 0, warning_alpha), (0, 0, bar_w, bar_h), 2, border_radius=4)
+                    canvas.blit(warn_surf, (bar_x, bar_y))
+                else:
+                    pygame.draw.rect(canvas, (255, 255, 255), (bar_x, bar_y, bar_w, bar_h), 1, border_radius=4)
 
         # 9. Draw HUD
         self._render_hud(canvas, width)
@@ -631,29 +660,45 @@ class GameplayScene(Scene):
             rep_text.set_alpha(alpha)
             canvas.blit(rep_text, (30, 130))
 
-        # 10. Result Overlay
+        # 10. Result Overlay Card with Scale-in Spring Animation
         if self.mode == "result":
             wash = pygame.Surface((width, height), pygame.SRCALPHA)
-            wash.fill((10, 12, 18, 160))
+            wash.fill((10, 12, 18, 170))
             canvas.blit(wash, (0, 0))
             
-            font_res = self.asset_manager.get_font("default", 90)
-            if self.outcome == "GOAL":
-                msg = "GOAL!"
-                col = (0, 255, 100)
-            elif self.outcome == "SAVE":
-                msg = "SAVED!"
-                col = (0, 153, 255)
-            else:
-                msg = "MISSED!"
-                col = (255, 51, 51)
-            res_s = font_res.render(msg, True, col)
-            res_r = res_s.get_rect(center=(width // 2, height // 2 - 40))
-            canvas.blit(res_s, res_r)
+            # Spring scale animation factor based on result_timer
+            elapsed = 2.0 - self.result_timer
+            scale_factor = min(1.0, elapsed * 4.5)
+            
+            card_w, card_h = int(500 * scale_factor), int(180 * scale_factor)
+            if card_w > 10 and card_h > 10:
+                card_x = (width - card_w) // 2
+                card_y = (height - card_h) // 2 - 20
+                
+                card_surf = pygame.Surface((card_w, card_h), pygame.SRCALPHA)
+                card_surf.fill((20, 24, 34, 230))
+                
+                if self.outcome == "GOAL":
+                    msg = "GOAL!"
+                    col = (0, 255, 120)
+                elif self.outcome == "SAVE":
+                    msg = "SAVED!"
+                    col = (30, 170, 255)
+                else:
+                    msg = "MISSED!"
+                    col = (255, 60, 60)
+                    
+                pygame.draw.rect(card_surf, col, (0, 0, card_w, card_h), width=3, border_radius=12)
+                canvas.blit(card_surf, (card_x, card_y))
+                
+                font_res = self.asset_manager.get_font("default", max(16, int(80 * scale_factor)))
+                res_s = font_res.render(msg, True, col)
+                res_r = res_s.get_rect(center=(width // 2, height // 2 - 30))
+                canvas.blit(res_s, res_r)
             
             font_sub = self.asset_manager.get_font("default", 24)
             sub_s = font_sub.render("Click or press SPACE to continue", True, (240, 240, 240))
-            sub_r = sub_s.get_rect(center=(width // 2, height // 2 + 50))
+            sub_r = sub_s.get_rect(center=(width // 2, height // 2 + 70))
             canvas.blit(sub_s, sub_r)
 
         # 11. Final output blit supporting camera shake offsets
