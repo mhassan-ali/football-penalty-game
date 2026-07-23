@@ -67,6 +67,13 @@ class ResultsScene(Scene):
 
             save_mgr.check_match_achievements(player_won, self.player_score, self.player_saves, self.opponent_score)
 
+        audio_mgr = getattr(self.scene_manager, "audio_manager", None)
+        if audio_mgr:
+            if player_won:
+                audio_mgr.play_sfx("fanfare")
+            else:
+                audio_mgr.play_sfx("gasp")
+
     def handle_event(self, event: pygame.event.Event) -> None:
         audio_mgr = getattr(self.scene_manager, "audio_manager", None)
         if event.type == pygame.KEYDOWN:
